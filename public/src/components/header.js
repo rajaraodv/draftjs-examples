@@ -20,7 +20,7 @@ class Header extends Component {
         <div id="navbar" className="collapse navbar-collapse">
           <ul className="nav navbar-nav  pull-right">
             <li><a href="https://facebook.github.io/draft-js/" target="_blank">DRAFT.JS</a></li>
-            <li><a href=""  target="_blank">GITHUB</a></li>
+            <li><a href="https://github.com/rajaraodv/draftjs-examples"  target="_blank">GITHUB</a></li>
           </ul>
         </div>
       </div>
