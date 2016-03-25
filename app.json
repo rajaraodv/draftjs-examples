@@ -1,0 +1,13 @@
+{
+  "name": "DraftJS Examples",
+  "description": "Contains a list of Draft.js Examples",
+  "repository": "https://github.com/rajaraodv/draftjs-examples",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["draft.js", "reactjs", "javascript"],
+  "image": "heroku/nodejs",
+  "env": {
+  	"NODE_ENV": {
+  		"description": "Node environment",
+  		"value": "production"
+  	}
+}
