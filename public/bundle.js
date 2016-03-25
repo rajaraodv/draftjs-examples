@@ -26444,7 +26444,7 @@
 	                null,
 	                _react2.default.createElement(
 	                  'a',
-	                  { href: '', target: '_blank' },
+	                  { href: 'https://github.com/rajaraodv/draftjs-examples', target: '_blank' },
 	                  'GITHUB'
 	                )
 	              )
