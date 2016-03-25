@@ -1,4 +1,4 @@
-# React Redux CRUD App
+# Draft.js Examples
 
 #Live App
 <a href="https://draftjs-examples.herokuapp.com/" target="_blank">https://draftjs-examples.herokuapp.com/</a>
