@@ -46,7 +46,8 @@ class Examples extends Component {
              <iframe src="https://react-rte.org/demo" height="500px" width="1000px" frameBorder="0"/>
         </Panel>
         <Panel title="Facebook Notes clone" source="https://github.com/andrewcoelho/react-text-editor" features="Add images, bold, italics, numbered rows">                    
-        	   <iframe src="http://www.andrewcoelho.com/react-text-editor/" height="1000px" width="1100px" frameBorder="0"/>
+        	   Note: If you are not seeing anything, reload this app in HTTP(not HTTPS) I'm just iframing it from <a href="http://www.andrewcoelho.com/react-text-editor/" target="_blank">http://www.andrewcoelho.com/react-text-editor/</a>)
+             <iframe src="http://www.andrewcoelho.com/react-text-editor/" height="1000px" width="1100px" frameBorder="0"/>
         </Panel>
 
         </div>

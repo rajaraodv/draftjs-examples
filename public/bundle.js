@@ -26348,6 +26348,13 @@
 	          _react2.default.createElement(
 	            _Panel2.default,
 	            { title: 'Facebook Notes clone', source: 'https://github.com/andrewcoelho/react-text-editor', features: 'Add images, bold, italics, numbered rows' },
+	            'Note: If you are not seeing anything, reload this app in HTTP(not HTTPS) I\'m just iframing it from ',
+	            _react2.default.createElement(
+	              'a',
+	              { href: 'http://www.andrewcoelho.com/react-text-editor/', target: '_blank' },
+	              'http://www.andrewcoelho.com/react-text-editor/'
+	            ),
+	            ')',
 	            _react2.default.createElement('iframe', { src: 'http://www.andrewcoelho.com/react-text-editor/', height: '1000px', width: '1100px', frameBorder: '0' })
 	          )
 	        )
