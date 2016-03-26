@@ -9,6 +9,7 @@ import PlainText from '../components/PlainText.js';
 import Rich from '../components/Rich.js';
 import TexEditorExample from '../components/TexEditorExample.js';
 import Tweet from '../components/Tweet.js';
+import DraftJSPluginsEditor from '../components/DraftJSPluginsEditor.js';
 
 class Examples extends Component {
   render() {
@@ -39,9 +40,13 @@ class Examples extends Component {
         <Panel title="TeXEditorExample" source="https://github.com/facebook/draft-js/blob/master/examples/tex" features="Click on the equation to edit; Add new equation">                    
         	<TexEditorExample />
         </Panel>
-        <Panel title="TeXEditorExample" source="https://github.com/facebook/draft-js/blob/master/examples/tweet" features="@mention and #hashtag">                    
-        	<Tweet />
+        <Panel title="@mention #hashtag" source="https://github.com/facebook/draft-js/blob/master/examples/tweet" features="@mention and #hashtag">                    
+          <Tweet />
         </Panel>
+        <Panel title="DraftJS-Plugins Editor" source="https://www.draft-js-plugins.com/" features="1. @mention w/ menu 2. Stickers! 3. colorful links 4. Hashtags 5. Undo/Redo">                    
+          <DraftJSPluginsEditor />
+        </Panel>
+
         <Panel title="https://react-rte.org/demo" source="https://react-rte.org/demo" features="Rich Text Buttons">                    
              <iframe src="https://react-rte.org/demo" height="500px" width="1000px" frameBorder="0"/>
         </Panel>

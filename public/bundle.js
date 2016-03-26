@@ -26269,6 +26269,10 @@
 
 	var _Tweet2 = _interopRequireDefault(_Tweet);
 
+	var _DraftJSPluginsEditor = __webpack_require__(415);
+
+	var _DraftJSPluginsEditor2 = _interopRequireDefault(_DraftJSPluginsEditor);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26337,8 +26341,13 @@
 	          ),
 	          _react2.default.createElement(
 	            _Panel2.default,
-	            { title: 'TeXEditorExample', source: 'https://github.com/facebook/draft-js/blob/master/examples/tweet', features: '@mention and #hashtag' },
+	            { title: '@mention #hashtag', source: 'https://github.com/facebook/draft-js/blob/master/examples/tweet', features: '@mention and #hashtag' },
 	            _react2.default.createElement(_Tweet2.default, null)
+	          ),
+	          _react2.default.createElement(
+	            _Panel2.default,
+	            { title: 'DraftJS-Plugins Editor', source: 'https://www.draft-js-plugins.com/', features: '1. @mention w/ menu 2. Stickers! 3. colorful links 4. Hashtags 5. Undo/Redo' },
+	            _react2.default.createElement(_DraftJSPluginsEditor2.default, null)
 	          ),
 	          _react2.default.createElement(
 	            _Panel2.default,
@@ -56391,6 +56400,5375 @@
 	};
 
 	exports.default = TweetEditorExample;
+
+/***/ },
+/* 415 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(243);
+
+	var _draftJsPluginsEditor = __webpack_require__(416);
+
+	var _draftJsPluginsEditor2 = _interopRequireDefault(_draftJsPluginsEditor);
+
+	var _draftJsMentionPlugin = __webpack_require__(424);
+
+	var _draftJsMentionPlugin2 = _interopRequireDefault(_draftJsMentionPlugin);
+
+	var _draftJsLinkifyPlugin = __webpack_require__(435);
+
+	var _draftJsLinkifyPlugin2 = _interopRequireDefault(_draftJsLinkifyPlugin);
+
+	var _draftJsStickerPlugin = __webpack_require__(446);
+
+	var _draftJsStickerPlugin2 = _interopRequireDefault(_draftJsStickerPlugin);
+
+	var _draftJsHashtagPlugin = __webpack_require__(454);
+
+	var _draftJsHashtagPlugin2 = _interopRequireDefault(_draftJsHashtagPlugin);
+
+	var _draftJsUndoPlugin = __webpack_require__(457);
+
+	var _draftJsUndoPlugin2 = _interopRequireDefault(_draftJsUndoPlugin);
+
+	__webpack_require__(460);
+
+	__webpack_require__(464);
+
+	__webpack_require__(466);
+
+	__webpack_require__(468);
+
+	__webpack_require__(470);
+
+	var _immutable = __webpack_require__(245);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import createEmojiPlugin from 'draft-js-emoji-plugin';
+
+	//import  'draft-js-emoji-plugin/lib/plugin.css';
+
+
+	var mentions = (0, _immutable.fromJS)([{
+	  name: 'Matthew Russell',
+	  link: 'https://twitter.com/mrussell247',
+	  avatar: 'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg'
+	}, {
+	  name: 'Julian Krispel-Samsel',
+	  link: 'https://twitter.com/juliandoesstuff',
+	  avatar: 'https://pbs.twimg.com/profile_images/477132877763579904/m5bFc8LF_400x400.jpg'
+	}, {
+	  name: 'Jyoti Puri',
+	  link: 'https://twitter.com/jyopur',
+	  avatar: 'https://pbs.twimg.com/profile_images/705714058939359233/IaJoIa78_400x400.jpg'
+	}, {
+	  name: 'Max Stoiber',
+	  link: 'https://twitter.com/mxstbr',
+	  avatar: 'https://pbs.twimg.com/profile_images/681114454029942784/PwhopfmU_400x400.jpg'
+	}, {
+	  name: 'Nik Graf',
+	  link: 'https://twitter.com/nikgraf',
+	  avatar: 'https://pbs.twimg.com/profile_images/535634005769457664/Ppl32NaN_400x400.jpeg'
+	}]);
+
+	var stickers = (0, _immutable.fromJS)({
+	  data: {
+	    'b3aa388f-b9f4-45b0-bba5-d92cf2caa48b': {
+	      id: 'b3aa388f-b9f4-45b0-bba5-d92cf2caa48b',
+	      url: 'https://www.draft-js-plugins.com/images/unicorn-4.png'
+	    },
+	    'adec3f13-823c-47c3-b4d1-be4f68dd9d6d': {
+	      id: 'adec3f13-823c-47c3-b4d1-be4f68dd9d6d',
+	      url: 'https://www.draft-js-plugins.com/images/unicorn-1.png'
+	    },
+	    'e14b5a20-1025-4952-b731-41cd4b118ba0': {
+	      id: 'e14b5a20-1025-4952-b731-41cd4b118ba0',
+	      url: 'https://www.draft-js-plugins.com/images/unicorn-6.png'
+	    },
+	    '659a0dbf-5f85-4f32-999d-eb9ba6b0f417': {
+	      id: '659a0dbf-5f85-4f32-999d-eb9ba6b0f417',
+	      url: 'https://www.draft-js-plugins.com/images/unicorn-2.png'
+	    },
+	    'fab0ae95-ae95-4775-b484-72c290437602': {
+	      id: 'fab0ae95-ae95-4775-b484-72c290437602',
+	      url: 'https://www.draft-js-plugins.com/images/unicorn-5.png'
+	    },
+	    '71853190-8acd-4d3b-b4fd-63f7b0648daa': {
+	      id: '71853190-8acd-4d3b-b4fd-63f7b0648daa',
+	      url: 'https://www.draft-js-plugins.com/images/unicorn-3.png'
+	    }
+	  }
+	});
+
+	var text = 'Try out: 1. type "@" to see context-menu 2. Add Stickers by clicking the button below 3. Themed http://bla.com 4. Themed #hashtags 5. Undo/Redo 6. Emojis:  🙌\n🌿☃️🎉🙈 aaaand maybe a few more here 🐲☀️🗻 ';
+
+	var mentionPlugin = (0, _draftJsMentionPlugin2.default)({ mentions: mentions });
+	var linkifyPlugin = (0, _draftJsLinkifyPlugin2.default)();
+	var stickerPlugin = (0, _draftJsStickerPlugin2.default)({ stickers: stickers });
+	var StickerSelect = stickerPlugin.StickerSelect;
+	//const emojiPlugin = createEmojiPlugin();
+	var hashtagPlugin = (0, _draftJsHashtagPlugin2.default)();
+	var undoPlugin = (0, _draftJsUndoPlugin2.default)();
+	var UndoButton = undoPlugin.UndoButton;
+	var RedoButton = undoPlugin.RedoButton;
+
+
+	var plugins = [mentionPlugin, linkifyPlugin, stickerPlugin, hashtagPlugin, undoPlugin];
+
+	var CustomEditor = function (_Component) {
+	  _inherits(CustomEditor, _Component);
+
+	  function CustomEditor() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, CustomEditor);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CustomEditor)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	      editorState: (0, _draftJsPluginsEditor.createEditorStateWithText)(text)
+	    }, _this.onChange = function (editorState) {
+	      _this.setState({
+	        editorState: editorState
+	      });
+	    }, _this.focus = function () {
+	      _this.refs.editor.focus();
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(CustomEditor, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { onClick: this.focus },
+	          _react2.default.createElement(_draftJsPluginsEditor2.default, {
+	            editorState: this.state.editorState,
+	            onChange: this.onChange,
+	            plugins: plugins,
+	            ref: 'editor'
+	          })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { style: { marginTop: '100px' } },
+	          _react2.default.createElement(StickerSelect, { editor: this }),
+	          _react2.default.createElement('span', { style: { marginRight: '10px' } }),
+	          _react2.default.createElement(UndoButton, {
+	            editorState: this.state.editorState,
+	            onChange: this.onChange
+	          }),
+	          _react2.default.createElement(RedoButton, {
+	            editorState: this.state.editorState,
+	            onChange: this.onChange
+	          })
+	        ),
+	        _react2.default.createElement('div', null)
+	      );
+	    }
+	  }]);
+
+	  return CustomEditor;
+	}(_react.Component);
+
+	exports.default = CustomEditor;
+
+/***/ },
+/* 416 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.createEditorStateWithText = exports.default = undefined;
+
+	var _createEditorStateWithText = __webpack_require__(417);
+
+	var _createEditorStateWithText2 = _interopRequireDefault(_createEditorStateWithText);
+
+	var _Editor = __webpack_require__(418);
+
+	var _Editor2 = _interopRequireDefault(_Editor);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = _Editor2.default;
+	var createEditorStateWithText = exports.createEditorStateWithText = _createEditorStateWithText2.default;
+
+/***/ },
+/* 417 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _draftJs = __webpack_require__(243);
+
+	exports.default = function (text) {
+	  return _draftJs.EditorState.createWithContent(_draftJs.ContentState.createFromText(text));
+	}; /**
+	    * Create an editor state with some text in it already
+	    */
+
+/***/ },
+/* 418 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(243);
+
+	var _createCompositeDecorator = __webpack_require__(419);
+
+	var _createCompositeDecorator2 = _interopRequireDefault(_createCompositeDecorator);
+
+	var _moveSelectionToEnd = __webpack_require__(421);
+
+	var _moveSelectionToEnd2 = _interopRequireDefault(_moveSelectionToEnd);
+
+	var _moveToEndOfSelectedBlock = __webpack_require__(422);
+
+	var _moveToEndOfSelectedBlock2 = _interopRequireDefault(_moveToEndOfSelectedBlock);
+
+	var _moveToStartOfSelectedBlock = __webpack_require__(423);
+
+	var _moveToStartOfSelectedBlock2 = _interopRequireDefault(_moveToStartOfSelectedBlock);
+
+	var _immutable = __webpack_require__(245);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * The main editor c;omponent
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	var PluginEditor = function (_Component) {
+	  _inherits(PluginEditor, _Component);
+
+	  // TODO add flow types & propTypes - since it's a library and people might not use flow we want to have both
+
+	  function PluginEditor(props) {
+	    _classCallCheck(this, PluginEditor);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PluginEditor).call(this, props));
+
+	    _initialiseProps.call(_this);
+
+	    _this.plugins = (0, _immutable.List)(props.plugins).filter(function (plugin) {
+	      return plugin.pluginProps !== undefined;
+	    }).map(function (plugin) {
+	      return plugin.pluginProps;
+	    }).toArray();
+	    var compositeDecorator = (0, _createCompositeDecorator2.default)(_this.plugins, _this.getEditorState, _this.onChange);
+
+	    // TODO consider triggering an onChange here to make sure the editorState is in sync
+	    // with the outer Editor context
+	    var editorState = _draftJs.EditorState.set(_this.props.editorState, { decorator: compositeDecorator });
+	    _this.editorState = (0, _moveSelectionToEnd2.default)(editorState);
+	    return _this;
+	  }
+
+	  _createClass(PluginEditor, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      // Makes sure the editorState of the wrapping component is in sync with the
+	      // internal one, because we added the decorator in the constructor.
+	      if (this.props.onChange) {
+	        this.props.onChange(this.editorState);
+	      }
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(props) {
+	      this.editorState = props.editorState;
+	    }
+
+	    // Cycle through the plugins, changing the editor state with what the plugins
+	    // changed (or didn't)
+
+
+	    // Put the keyboard focus on the editor
+
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var pluginProps = {};
+	      this.plugins.forEach(function (plugin) {
+	        if (plugin.getEditorProps) {
+	          pluginProps = _extends({}, pluginProps, plugin.getEditorProps());
+	        }
+	      });
+
+	      return _react2.default.createElement(_draftJs.Editor, _extends({}, pluginProps, this.props, {
+	        onChange: this.onChange,
+	        editorState: this.editorState,
+	        blockRendererFn: this.blockRendererFn,
+	        handleKeyCommand: this.handleKeyCommand,
+	        keyBindingFn: this.keyBindingFn,
+	        onDownArrow: this.onDownArrow,
+	        onTab: this.onTab,
+	        onUpArrow: this.onUpArrow,
+	        onEscape: this.onEscape,
+	        handleReturn: this.handleReturn,
+	        ref: 'editor'
+	      }));
+	    }
+	  }]);
+
+	  return PluginEditor;
+	}(_react.Component);
+
+	var _initialiseProps = function _initialiseProps() {
+	  var _this2 = this;
+
+	  this.onChange = function (editorState) {
+	    var newEditorState = editorState;
+	    _this2.plugins.forEach(function (plugin) {
+	      if (plugin.onChange) {
+	        newEditorState = plugin.onChange(newEditorState);
+	      }
+	    });
+
+	    if (_this2.props.onChange) {
+	      _this2.props.onChange(newEditorState);
+	    }
+	  };
+
+	  this.onDownArrow = function (keyboardEvent) {
+	    // TODO allow to provide a custom onDownArrow
+
+	    _this2.plugins.map(function (plugin) {
+	      if (plugin.onDownArrow) {
+	        plugin.onDownArrow(keyboardEvent);
+	      }
+
+	      return undefined;
+	    });
+	  };
+
+	  this.onUpArrow = function (keyboardEvent) {
+	    // TODO allow to provide a custom onUpArrow
+
+	    _this2.plugins.map(function (plugin) {
+	      if (plugin.onUpArrow) {
+	        plugin.onUpArrow(keyboardEvent);
+	      }
+
+	      return undefined;
+	    });
+	  };
+
+	  this.onEscape = function (keyboardEvent) {
+	    // TODO allow to provide a custom onEscape
+
+	    _this2.plugins.map(function (plugin) {
+	      if (plugin.onEscape) {
+	        plugin.onEscape(keyboardEvent);
+	      }
+
+	      return undefined;
+	    });
+	  };
+
+	  this.onTab = function (keyboardEvent) {
+	    // TODO allow to provide a custom onTab
+
+	    _this2.plugins.map(function (plugin) {
+	      if (plugin.onTab) {
+	        plugin.onTab(keyboardEvent);
+	      }
+
+	      return undefined;
+	    });
+	  };
+
+	  this.getEditorState = function () {
+	    return _this2.editorState;
+	  };
+
+	  this.handleKeyCommand = function (command) {
+	    var preventDefaultBehaviour = false;
+	    if (_this2.props.handleKeyCommand) {
+	      var handled = _this2.props.handleKeyCommand(command);
+	      if (handled === true) {
+	        preventDefaultBehaviour = true;
+	      }
+	    }
+
+	    // TODO optimize to break after the first one
+	    preventDefaultBehaviour = _this2.plugins.map(function (plugin) {
+	      if (plugin.handleKeyCommand) {
+	        var _handled = plugin.handleKeyCommand(command);
+	        if (_handled === true) {
+	          return _handled;
+	        }
+	      }
+
+	      return undefined;
+	    }).find(function (result) {
+	      return result === true;
+	    });
+
+	    if (command === 'plugin-editor-move-to-start') {
+	      (0, _moveToStartOfSelectedBlock2.default)(_this2.editorState, _this2.props.onChange);
+	      preventDefaultBehaviour = true;
+	    } else if (command === 'plugin-editor-move-to-end') {
+	      (0, _moveToEndOfSelectedBlock2.default)(_this2.editorState, _this2.props.onChange);
+	      preventDefaultBehaviour = true;
+	    }
+
+	    return preventDefaultBehaviour === true;
+	  };
+
+	  this.handleReturn = function (keyboardEvent) {
+	    // TODO optimize to break after the first one
+	    var preventDefaultBehaviour = _this2.plugins.map(function (plugin) {
+	      if (plugin.handleReturn) {
+	        var handled = plugin.handleReturn(keyboardEvent);
+	        if (handled === true) {
+	          return handled;
+	        }
+	      }
+
+	      return undefined;
+	    }).find(function (result) {
+	      return result === true;
+	    });
+
+	    // TODO allow to provide a custom handleReturn
+	    return preventDefaultBehaviour === true;
+	  };
+
+	  this.keyBindingFn = function (keyboardEvent) {
+	    // TODO optimize to break after the first one
+	    var command = _this2.plugins.map(function (plugin) {
+	      if (plugin.keyBindingFn) {
+	        var pluginCommand = plugin.keyBindingFn(keyboardEvent);
+	        if (pluginCommand) {
+	          return pluginCommand;
+	        }
+	      }
+
+	      return undefined;
+	    }).find(function (result) {
+	      return result !== undefined;
+	    });
+
+	    if (command === undefined) {
+	      if (keyboardEvent.keyCode === 37 && _draftJs.KeyBindingUtil.hasCommandModifier(keyboardEvent)) {
+	        command = 'plugin-editor-move-to-start';
+	      } else if (keyboardEvent.keyCode === 39 && _draftJs.KeyBindingUtil.hasCommandModifier(keyboardEvent)) {
+	        command = 'plugin-editor-move-to-end';
+	      }
+	    }
+
+	    // TODO allow to provide a custom handleKeyCommand
+
+	    return command !== undefined ? command : (0, _draftJs.getDefaultKeyBinding)(keyboardEvent);
+	  };
+
+	  this.blockRendererFn = function (contentBlock) {
+	    // TODO optimize to break after the first one
+	    if (_this2.props.blockRendererFn) {
+	      var result = _this2.props.blockRendererFn(contentBlock);
+	      if (result) {
+	        return result;
+	      }
+	    }
+
+	    return _this2.plugins.map(function (plugin) {
+	      if (plugin.blockRendererFn) {
+	        var _result = plugin.blockRendererFn(contentBlock, _this2.getEditorState, _this2.onChange);
+	        if (_result) {
+	          return _result;
+	        }
+	      }
+
+	      return undefined;
+	    }).find(function (result) {
+	      return result !== undefined;
+	    });
+	  };
+
+	  this.focus = function () {
+	    _this2.refs.editor.focus();
+	  };
+	};
+
+	exports.default = PluginEditor;
+
+/***/ },
+/* 419 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /**
+	                                                                                                                                                                                                                                                                   * Creates a composite decorator based on the provided plugins
+	                                                                                                                                                                                                                                                                   */
+
+	var _immutable = __webpack_require__(245);
+
+	var _draftJs = __webpack_require__(243);
+
+	var _decorateComponentWithProps = __webpack_require__(420);
+
+	var _decorateComponentWithProps2 = _interopRequireDefault(_decorateComponentWithProps);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (plugins, getEditorState, updateEditorState) {
+	  var decorators = (0, _immutable.List)(plugins).filter(function (plugin) {
+	    return plugin.decorators !== undefined;
+	  }).flatMap(function (plugin) {
+	    return plugin.decorators;
+	  }).map(function (decorator) {
+	    return _extends({}, decorator, {
+	      component: (0, _decorateComponentWithProps2.default)(decorator.component, { getEditorState: getEditorState, updateEditorState: updateEditorState })
+	    });
+	  }).toJS();
+
+	  return new _draftJs.CompositeDecorator(decorators);
+	};
+
+/***/ },
+/* 420 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var getDisplayName = function getDisplayName(WrappedComponent) {
+	  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+	};
+
+	/* eslint-disable space-before-keywords */
+
+	exports.default = function (EmbeddedComponent, props) {
+	  var _class, _temp;
+
+	  return _temp = _class = function (_Component) {
+	    _inherits(_class, _Component);
+
+	    function _class() {
+	      _classCallCheck(this, _class);
+
+	      return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+	    }
+
+	    _createClass(_class, [{
+	      key: 'render',
+	      value: function render() {
+	        return _react2.default.createElement(EmbeddedComponent, _extends({}, this.props, props));
+	      }
+	    }]);
+
+	    return _class;
+	  }(_react.Component), _class.displayName = 'Decorated(' + getDisplayName(EmbeddedComponent) + ')', _temp;
+	};
+
+/***/ },
+/* 421 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _draftJs = __webpack_require__(243);
+
+	/**
+	 * Returns a new EditorState where the Selection is at the end.
+	 *
+	 * This ensures to mimic the textarea behaviour where the Selection is placed at
+	 * the end. This is needed when blocks (like stickers or other media) are added
+	 * without the editor having had focus yet. It still works to place the
+	 * Selection at a specific location by clicking on the text.
+	 */
+	var moveSelectionToEnd = function moveSelectionToEnd(editorState) {
+	  var content = editorState.getCurrentContent();
+	  var blockMap = content.getBlockMap();
+
+	  var key = blockMap.last().getKey();
+	  var length = blockMap.last().getLength();
+
+	  var selection = new _draftJs.SelectionState({
+	    anchorKey: key,
+	    anchorOffset: length,
+	    focusKey: key,
+	    focusOffset: length
+	  });
+
+	  return _draftJs.EditorState.acceptSelection(editorState, selection);
+	};
+
+	exports.default = moveSelectionToEnd;
+
+/***/ },
+/* 422 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _draftJs = __webpack_require__(243);
+
+	var moveToEndOfSelectedBlock = function moveToEndOfSelectedBlock(editorState, onChange) {
+	  if (onChange === undefined) return;
+	  var selection = editorState.getSelection();
+	  var block = editorState.getCurrentContent().getBlockForKey(selection.getAnchorKey());
+	  var size = block.getLength();
+	  if (selection.getAnchorOffset() !== size || selection.getFocusOffset() !== size) {
+	    var newSelection = selection.merge({
+	      anchorOffset: size,
+	      focusOffset: size
+	    });
+	    var newEditorState = _draftJs.EditorState.forceSelection(editorState, newSelection);
+	    onChange(newEditorState);
+	  }
+	};
+
+	exports.default = moveToEndOfSelectedBlock;
+
+/***/ },
+/* 423 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _draftJs = __webpack_require__(243);
+
+	var moveToEndOfSelectedBlock = function moveToEndOfSelectedBlock(editorState, onChange) {
+	  if (onChange === undefined) return;
+	  var selection = editorState.getSelection();
+	  if (selection.getAnchorOffset() !== 0 || selection.getFocusOffset() !== 0) {
+	    var newSelection = selection.merge({
+	      anchorOffset: 0,
+	      focusOffset: 0
+	    });
+	    var newEditorState = _draftJs.EditorState.forceSelection(editorState, newSelection);
+	    onChange(newEditorState);
+	  }
+	};
+
+	exports.default = moveToEndOfSelectedBlock;
+
+/***/ },
+/* 424 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _Mention = __webpack_require__(425);
+
+	var _Mention2 = _interopRequireDefault(_Mention);
+
+	var _MentionSearch = __webpack_require__(426);
+
+	var _MentionSearch2 = _interopRequireDefault(_MentionSearch);
+
+	var _mentionStrategy = __webpack_require__(432);
+
+	var _mentionStrategy2 = _interopRequireDefault(_mentionStrategy);
+
+	var _mentionSearchStrategy = __webpack_require__(433);
+
+	var _mentionSearchStrategy2 = _interopRequireDefault(_mentionSearchStrategy);
+
+	var _decorateComponentWithProps = __webpack_require__(420);
+
+	var _decorateComponentWithProps2 = _interopRequireDefault(_decorateComponentWithProps);
+
+	var _immutable = __webpack_require__(245);
+
+	var _mentionStyles = {
+	  "mention": "draftJsMentionPlugin__mention__29BEd"
+	};
+
+	var _mentionStyles2 = _interopRequireDefault(_mentionStyles);
+
+	var _autocompleteStyles = {
+	  "autocomplete": "draftJsMentionPlugin__autocomplete__2-Dw-",
+	  "autocompletePopover": "draftJsMentionPlugin__autocompletePopover__Yau-5"
+	};
+
+	var _autocompleteStyles2 = _interopRequireDefault(_autocompleteStyles);
+
+	var _autocompleteEntryStyles = {
+	  "autocompleteEntry": "draftJsMentionPlugin__autocompleteEntry__3hYPz",
+	  "autocompleteEntryFocused": "draftJsMentionPlugin__autocompleteEntryFocused__3ralB draftJsMentionPlugin__autocompleteEntry__3hYPz",
+	  "autocompleteEntryText": "draftJsMentionPlugin__autocompleteEntryText__VAEv4",
+	  "autocompleteEntryAvatar": "draftJsMentionPlugin__autocompleteEntryAvatar__2nAfa"
+	};
+
+	var _autocompleteEntryStyles2 = _interopRequireDefault(_autocompleteEntryStyles);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var defaultTheme = (0, _immutable.Map)({
+	  mention: _mentionStyles2.default.mention,
+
+	  autocomplete: _autocompleteStyles2.default.autocomplete,
+	  autocompletePopover: _autocompleteStyles2.default.autocompletePopover,
+
+	  autocompleteEntry: _autocompleteEntryStyles2.default.autocompleteEntry,
+	  autocompleteEntryFocused: _autocompleteEntryStyles2.default.autocompleteEntryFocused,
+	  autocompleteEntryText: _autocompleteEntryStyles2.default.autocompleteEntryText,
+	  autocompleteEntryAvatar: _autocompleteEntryStyles2.default.autocompleteEntryAvatar
+	});
+
+	var callbacks = {
+	  keyBindingFn: undefined,
+	  handleKeyCommand: undefined,
+	  onDownArrow: undefined,
+	  onUpArrow: undefined,
+	  onTab: undefined,
+	  onEscape: undefined,
+	  handleReturn: undefined,
+	  onChange: undefined
+	};
+
+	var ariaProps = {
+	  role: 'combobox',
+	  ariaAutoComplete: 'list',
+	  ariaHasPopup: 'false',
+	  ariaExpanded: 'false',
+	  ariaOwneeID: 'mentions-select', // optional
+	  ariaActiveDescendantID: undefined };
+
+	// optional
+	var mentionPlugin = function mentionPlugin() {
+	  var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	  // Styles are overwritten instead of merged as merging causes a lot of confusion.
+	  //
+	  // Why? Because when merging a developer needs to know all of the underlying
+	  // styles which needs a deep dive into the code. Merging also makes it prone to
+	  // errors when upgrading as basically every styling change would become a major
+	  // breaking change. 1px of an increased padding can break a whole layout.
+	  var theme = config.theme ? config.theme : defaultTheme;
+	  var mentionSearchProps = {
+	    ariaProps: ariaProps,
+	    callbacks: callbacks,
+	    mentions: config.mentions,
+	    theme: theme
+	  };
+	  return {
+	    pluginProps: {
+	      decorators: [{
+	        strategy: _mentionStrategy2.default,
+	        component: (0, _decorateComponentWithProps2.default)(_Mention2.default, { theme: theme })
+	      }, {
+	        strategy: _mentionSearchStrategy2.default,
+	        component: (0, _decorateComponentWithProps2.default)(_MentionSearch2.default, mentionSearchProps)
+	      }],
+	      getEditorProps: function getEditorProps() {
+	        return ariaProps;
+	      },
+	      keyBindingFn: function keyBindingFn(keyboardEvent) {
+	        return callbacks.keyBindingFn && callbacks.keyBindingFn(keyboardEvent);
+	      },
+	      handleKeyCommand: function handleKeyCommand(command) {
+	        return callbacks.handleKeyCommand && callbacks.handleKeyCommand(command);
+	      },
+	      onDownArrow: function onDownArrow(keyboardEvent) {
+	        return callbacks.onDownArrow && callbacks.onDownArrow(keyboardEvent);
+	      },
+	      onTab: function onTab(keyboardEvent) {
+	        return callbacks.onTab && callbacks.onTab(keyboardEvent);
+	      },
+	      onUpArrow: function onUpArrow(keyboardEvent) {
+	        return callbacks.onUpArrow && callbacks.onUpArrow(keyboardEvent);
+	      },
+	      onEscape: function onEscape(keyboardEvent) {
+	        return callbacks.onEscape && callbacks.onEscape(keyboardEvent);
+	      },
+	      handleReturn: function handleReturn(keyboardEvent) {
+	        return callbacks.handleReturn && callbacks.handleReturn(keyboardEvent);
+	      },
+	      onChange: function onChange(editorState) {
+	        if (callbacks.onChange) return callbacks.onChange(editorState);
+	        return editorState;
+	      }
+	    }
+	  };
+	};
+
+	exports.default = mentionPlugin;
+
+/***/ },
+/* 425 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(243);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Mention = function Mention(props) {
+	  var entityKey = props.entityKey;
+	  var theme = props.theme;
+
+	  var _Entity$get$getData = _draftJs.Entity.get(entityKey).getData();
+
+	  var mention = _Entity$get$getData.mention;
+
+
+	  if (mention.has('link')) {
+	    return _react2.default.createElement(
+	      'a',
+	      {
+	        href: mention.get('link'),
+	        className: theme.get('mention'),
+	        spellCheck: false
+	      },
+	      props.children
+	    );
+	  }
+
+	  return _react2.default.createElement(
+	    'span',
+	    {
+	      className: theme.get('mention'),
+	      spellCheck: false
+	    },
+	    props.children
+	  );
+	};
+
+	exports.default = Mention;
+
+/***/ },
+/* 426 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _MentionOption = __webpack_require__(427);
+
+	var _MentionOption2 = _interopRequireDefault(_MentionOption);
+
+	var _addMention = __webpack_require__(429);
+
+	var _addMention2 = _interopRequireDefault(_addMention);
+
+	var _getSearchText3 = __webpack_require__(430);
+
+	var _getSearchText4 = _interopRequireDefault(_getSearchText3);
+
+	var _draftJs = __webpack_require__(243);
+
+	var _immutable = __webpack_require__(245);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MentionSearch = function (_Component) {
+	  _inherits(MentionSearch, _Component);
+
+	  function MentionSearch() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, MentionSearch);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(MentionSearch)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	      focusedOptionIndex: 0,
+	      isOpen: true
+	    }, _this.componentDidUpdate = function () {
+	      // In case the list shrinks there should be still an option focused.
+	      // Note: this might run multiple times and deduct 1 until the condition is
+	      // not fullfilled anymore.
+	      if (_this.state.focusedOptionIndex >= _this.filteredMentions.size) {
+	        _this.setState({
+	          focusedOptionIndex: _this.filteredMentions.size - 1
+	        });
+	      }
+	    }, _this.onEditorStateChange = function (editorState) {
+	      // store the initialSelection (must be at the @)
+	      if (_this.initialSelection === undefined) {
+	        _this.initialSelection = editorState.getSelection();
+	      }
+
+	      var removeList = function removeList() {
+	        if (_this.state.isOpen) {
+	          _this.setState({
+	            isOpen: false
+	          });
+	        }
+
+	        return editorState;
+	      };
+
+	      var selection = editorState.getSelection();
+
+	      // the list should not be visible if a range is selected or the editor has no focus
+	      if (!selection.isCollapsed() || !selection.getHasFocus()) return removeList();
+
+	      // only show the search component for the current block
+	      var sameBlock = selection.getAnchorKey() === _this.initialSelection.getAnchorKey();
+	      if (!sameBlock) return removeList();
+
+	      // Checks that the cursor is after the @ character but still somewhere in
+	      // the word (search term). Setting it to allow the cursor to be left of
+	      // the @ causes troubles as due selection confusion.
+
+	      var _getSearchText = (0, _getSearchText4.default)(editorState, _this.initialSelection);
+
+	      var begin = _getSearchText.begin;
+	      var end = _getSearchText.end;
+
+	      var anchorOffset = selection.getAnchorOffset();
+	      if (anchorOffset <= begin || end < anchorOffset) return removeList();
+
+	      // If none of the above triggered to close the window, it's safe to assume
+	      // the dropdown should be open. This is useful when a user focuses on another
+	      // input field and then comes back: the dropwdown will again.
+	      if (!_this.state.isOpen) {
+	        _this.setState({
+	          isOpen: true
+	        });
+	      }
+
+	      return editorState;
+	    }, _this.onMentionSelect = function (mention) {
+	      _this.updateAriaCloseDropdown();
+	      var selection = _this.props.getEditorState().getSelection();
+	      var newEditorState = (0, _addMention2.default)(_this.props.getEditorState(), mention, selection);
+	      _this.props.updateEditorState(newEditorState);
+	    }, _this.onDownArrow = function (keyboardEvent) {
+	      keyboardEvent.preventDefault();
+	      var newIndex = _this.state.focusedOptionIndex + 1;
+	      _this.onMentionFocus(newIndex >= _this.filteredMentions.size ? 0 : newIndex);
+	    }, _this.onTab = function (keyboardEvent) {
+	      keyboardEvent.preventDefault();
+	      _this.commitSelection();
+	    }, _this.onUpArrow = function (keyboardEvent) {
+	      keyboardEvent.preventDefault();
+	      if (_this.filteredMentions.size > 0) {
+	        var newIndex = _this.state.focusedOptionIndex - 1;
+	        _this.onMentionFocus(Math.max(newIndex, 0));
+	      }
+	    }, _this.onEscape = function (keyboardEvent) {
+	      keyboardEvent.preventDefault();
+
+	      _this.updateAriaCloseDropdown();
+	      _this.setState({
+	        isOpen: false
+	      });
+
+	      // to force a re-render of the outer component to change the aria props
+	      _this.props.updateEditorState(_this.props.getEditorState());
+	    }, _this.onMentionFocus = function (index) {
+	      _this.props.ariaProps.ariaActiveDescendantID = 'mention-option-' + _this.key + '-' + index;
+	      _this.setState({
+	        focusedOptionIndex: index
+	      });
+
+	      // to force a re-render of the outer component to change the aria props
+	      _this.props.updateEditorState(_this.props.getEditorState());
+	    }, _this.getMentionsForFilter = function () {
+	      var selection = _this.props.getEditorState().getSelection();
+
+	      var _getSearchText2 = (0, _getSearchText4.default)(_this.props.getEditorState(), selection);
+
+	      var word = _getSearchText2.word;
+
+	      var mentionValue = word.substring(1, word.length).toLowerCase();
+	      var mentions = _this.props.mentions ? _this.props.mentions : (0, _immutable.List)([]);
+	      var filteredValues = mentions.filter(function (mention) {
+	        return !mentionValue || mention.get('name').toLowerCase().indexOf(mentionValue) > -1;
+	      });
+	      var size = filteredValues.size < 5 ? filteredValues.size : 5;
+	      return filteredValues.setSize(size);
+	    }, _this.commitSelection = function () {
+	      _this.onMentionSelect(_this.filteredMentions.get(_this.state.focusedOptionIndex));
+	      return true;
+	    }, _this.updateAriaCloseDropdown = function () {
+	      _this.props.ariaProps.ariaHasPopup = 'false';
+	      _this.props.ariaProps.ariaExpanded = 'false';
+	      _this.props.ariaProps.ariaActiveDescendantID = undefined;
+	      _this.props.ariaProps.ariaOwneeID = undefined;
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(MentionSearch, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.key = (0, _draftJs.genKey)();
+
+	      // This a really nasty way of attaching & releasing the key related functions.
+	      // It assumes that the keyFunctions object will not loose its reference and
+	      // by this we can replace inner parameters spread over different modules.
+	      // This better be some registering & unregistering logic. PRs are welcome :)
+	      this.props.callbacks.onDownArrow = this.onDownArrow;
+	      this.props.callbacks.onUpArrow = this.onUpArrow;
+	      this.props.callbacks.onEscape = this.onEscape;
+	      this.props.callbacks.handleReturn = this.commitSelection;
+	      this.props.callbacks.onTab = this.onTab;
+	      this.props.callbacks.onChange = this.onEditorStateChange;
+	      this.props.ariaProps.ariaActiveDescendantID = 'mention-option-' + this.key + '-' + this.state.focusedOptionIndex;
+	      this.props.ariaProps.ariaOwneeID = 'mentions-list-' + this.key;
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      // This a really nasty way of attaching & releasing the key related functions.
+	      // It assumes that the ariaProps object will not loose its reference and
+	      // by this we can replace inner parameters spread over different modules.
+	      // This better be some registering & unregistering logic. PRs are welcome :)
+	      if (this.state.isOpen) {
+	        this.props.ariaProps.ariaHasPopup = 'true';
+	        this.props.ariaProps.ariaExpanded = 'true';
+	      } else {
+	        this.updateAriaCloseDropdown();
+	      }
+
+	      // Note: to force a re-render of the outer component to change the aria props
+	      this.props.updateEditorState(this.props.getEditorState());
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      // make sure none of these callbacks are triggered
+	      this.props.callbacks.onDownArrow = undefined;
+	      this.props.callbacks.onUpArrow = undefined;
+	      this.props.callbacks.onEscape = undefined;
+	      this.props.callbacks.handleReturn = undefined;
+	      this.props.callbacks.onChange = undefined;
+	    }
+
+	    // Get the first 5 mentions that match
+
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      this.filteredMentions = this.getMentionsForFilter();
+	      var theme = this.props.theme;
+
+	      return _react2.default.createElement(
+	        'span',
+	        _extends({}, this.props, { className: theme.get('autocomplete'), spellCheck: false }),
+	        this.state.isOpen && this.filteredMentions.size > 0 ? _react2.default.createElement(
+	          'div',
+	          {
+	            className: theme.get('autocompletePopover'),
+	            contentEditable: false,
+	            role: 'listbox',
+	            id: 'mentions-list-' + this.key
+	          },
+	          this.filteredMentions.map(function (mention, index) {
+	            return _react2.default.createElement(_MentionOption2.default, {
+	              key: mention.get('name'),
+	              onMentionSelect: _this2.onMentionSelect,
+	              onMentionFocus: _this2.onMentionFocus,
+	              isFocused: _this2.state.focusedOptionIndex === index,
+	              mention: mention,
+	              index: index,
+	              id: 'mention-option-' + _this2.key + '-' + index,
+	              theme: theme
+	            });
+	          })
+	        ) : null,
+	        this.props.children
+	      );
+	    }
+	  }]);
+
+	  return MentionSearch;
+	}(_react.Component);
+
+	exports.default = MentionSearch;
+
+/***/ },
+/* 427 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Avatar = __webpack_require__(428);
+
+	var _Avatar2 = _interopRequireDefault(_Avatar);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MentionOption = function (_Component) {
+	  _inherits(MentionOption, _Component);
+
+	  function MentionOption(props) {
+	    _classCallCheck(this, MentionOption);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MentionOption).call(this, props));
+
+	    _this.onMouseUp = function () {
+	      if (_this.mouseDown) {
+	        _this.mouseDown = false;
+	        _this.props.onMentionSelect(_this.props.mention);
+	      }
+	    };
+
+	    _this.onMouseDown = function (event) {
+	      // Note: important to avoid a content edit change
+	      event.preventDefault();
+
+	      _this.mouseDown = true;
+	    };
+
+	    _this.onMouseEnter = function () {
+	      _this.props.onMentionFocus(_this.props.index);
+	    };
+
+	    _this.mouseDown = false;
+	    return _this;
+	  }
+
+	  _createClass(MentionOption, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      this.mouseDown = false;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var theme = this.props.theme;
+
+	      var className = this.props.isFocused ? theme.get('autocompleteEntryFocused') : theme.get('autocompleteEntry');
+	      return _react2.default.createElement(
+	        'div',
+	        {
+	          className: className,
+	          onMouseDown: this.onMouseDown,
+	          onMouseUp: this.onMouseUp,
+	          onMouseEnter: this.onMouseEnter,
+	          role: 'option'
+	        },
+	        _react2.default.createElement(_Avatar2.default, { mention: this.props.mention, theme: theme }),
+	        _react2.default.createElement(
+	          'span',
+	          { className: theme.get('autocompleteEntryText') },
+	          this.props.mention.get('name')
+	        )
+	      );
+	    }
+	  }]);
+
+	  return MentionOption;
+	}(_react.Component);
+
+	exports.default = MentionOption;
+
+/***/ },
+/* 428 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Avatar = function Avatar(_ref) {
+	  var mention = _ref.mention;
+	  var theme = _ref.theme;
+
+	  if (mention.has('avatar')) {
+	    return _react2.default.createElement('img', { src: mention.get('avatar'), className: theme.get('autocompleteEntryAvatar') });
+	  }
+
+	  return null;
+	};
+
+	exports.default = Avatar;
+
+/***/ },
+/* 429 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _draftJs = __webpack_require__(243);
+
+	var _getSearchText2 = __webpack_require__(430);
+
+	var _getSearchText3 = _interopRequireDefault(_getSearchText2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var addMention = function addMention(editorState, mention, selection) {
+	  // TODO allow the user to override if the mentions are SEGMENTED, IMMUTABLE or MUTABLE
+	  var entityKey = _draftJs.Entity.create('mention', 'SEGMENTED', { mention: mention });
+
+	  var _getSearchText = (0, _getSearchText3.default)(editorState, selection);
+
+	  var begin = _getSearchText.begin;
+	  var end = _getSearchText.end;
+
+	  // get selection of the @mention search text
+
+	  var mentionTextSelection = editorState.getSelection().merge({
+	    anchorOffset: begin,
+	    focusOffset: end
+	  });
+
+	  var mentionReplacedContent = _draftJs.Modifier.replaceText(editorState.getCurrentContent(), mentionTextSelection, mention.get('name'), null, // no inline style needed
+	  entityKey);
+
+	  // If the mention is inserted at the end, a space is appended right after for
+	  // a smooth writing experience.
+	  var blockKey = mentionTextSelection.getAnchorKey();
+	  var blockSize = editorState.getCurrentContent().getBlockForKey(blockKey).getLength();
+	  if (blockSize === end) {
+	    mentionReplacedContent = _draftJs.Modifier.insertText(mentionReplacedContent, mentionReplacedContent.getSelectionAfter(), ' ');
+	  }
+
+	  var newEditorState = _draftJs.EditorState.push(editorState, mentionReplacedContent, 'insert-mention');
+	  return _draftJs.EditorState.forceSelection(newEditorState, mentionReplacedContent.getSelectionAfter());
+	};
+
+	exports.default = addMention;
+
+/***/ },
+/* 430 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _getWordAt = __webpack_require__(431);
+
+	var _getWordAt2 = _interopRequireDefault(_getWordAt);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var getSearchText = function getSearchText(editorState, selection) {
+	  var anchorKey = selection.getAnchorKey();
+	  var anchorOffset = selection.getAnchorOffset() - 1;
+	  var currentContent = editorState.getCurrentContent();
+	  var currentBlock = currentContent.getBlockForKey(anchorKey);
+	  var blockText = currentBlock.getText();
+	  return (0, _getWordAt2.default)(blockText, anchorOffset);
+	};
+
+	exports.default = getSearchText;
+
+/***/ },
+/* 431 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var getWordAt = function getWordAt(string, position) {
+	  // Perform type conversions.
+	  var str = String(string);
+	  var pos = Number(position) >>> 0;
+
+	  // Search for the word's beginning and end.
+	  var left = str.slice(0, pos + 1).search(/\S+$/);
+	  var right = str.slice(pos).search(/\s/);
+
+	  // The last word in the string is a special case.
+	  if (right < 0) {
+	    return {
+	      word: str.slice(left),
+	      begin: left,
+	      end: str.length
+	    };
+	  }
+
+	  // Return the word, using the located bounds to extract it from the string.
+	  return {
+	    word: str.slice(left, right + pos),
+	    begin: left,
+	    end: right + pos
+	  };
+	};
+
+	exports.default = getWordAt;
+
+/***/ },
+/* 432 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _draftJs = __webpack_require__(243);
+
+	var findMention = function findMention(character) {
+	  var entityKey = character.getEntity();
+	  return entityKey !== null && _draftJs.Entity.get(entityKey).getType() === 'mention';
+	};
+
+	var findMentionEntities = function findMentionEntities(contentBlock, callback) {
+	  contentBlock.findEntityRanges(findMention, callback);
+	};
+
+	exports.default = findMentionEntities;
+
+/***/ },
+/* 433 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _findWithRegex = __webpack_require__(434);
+
+	var _findWithRegex2 = _interopRequireDefault(_findWithRegex);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var MENTION_REGEX = /\@[\w]*/g;
+
+	exports.default = function (contentBlock, callback) {
+	  (0, _findWithRegex2.default)(MENTION_REGEX, contentBlock, callback);
+	};
+
+/***/ },
+/* 434 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var findWithRegex = function findWithRegex(regex, contentBlock, callback) {
+	  // Get the text from the contentBlock
+	  var text = contentBlock.getText();
+	  var matchArr = void 0;
+	  var start = void 0; // eslint-disable-line
+	  // Go through all matches in the text and return the indizes to the callback
+	  while ((matchArr = regex.exec(text)) !== null) {
+	    // eslint-disable-line
+	    start = matchArr.index;
+	    callback(start, start + matchArr[0].length);
+	  }
+	};
+
+	exports.default = findWithRegex;
+
+/***/ },
+/* 435 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _Link = __webpack_require__(436);
+
+	var _Link2 = _interopRequireDefault(_Link);
+
+	var _linkStrategy = __webpack_require__(438);
+
+	var _linkStrategy2 = _interopRequireDefault(_linkStrategy);
+
+	var _immutable = __webpack_require__(245);
+
+	var _styles = {
+	  "link": "draftJsLinkifyPlugin__link__2ittM"
+	};
+
+	var _styles2 = _interopRequireDefault(_styles);
+
+	var _decorateComponentWithProps = __webpack_require__(420);
+
+	var _decorateComponentWithProps2 = _interopRequireDefault(_decorateComponentWithProps);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var defaultTheme = (0, _immutable.Map)({
+	  link: _styles2.default.link
+	});
+
+	var linkPlugin = function linkPlugin() {
+	  var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	  // Styles are overwritten instead of merged as merging causes a lot of confusion.
+	  //
+	  // Why? Because when merging a developer needs to know all of the underlying
+	  // styles which needs a deep dive into the code. Merging also makes it prone to
+	  // errors when upgrading as basically every styling change would become a major
+	  // breaking change. 1px of an increased padding can break a whole layout.
+	  var theme = config.theme ? config.theme : defaultTheme;
+	  return {
+	    pluginProps: {
+	      decorators: [{
+	        strategy: _linkStrategy2.default,
+	        component: (0, _decorateComponentWithProps2.default)(_Link2.default, { theme: theme })
+	      }]
+	    }
+	  };
+	};
+
+	exports.default = linkPlugin;
+
+/***/ },
+/* 436 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _unionClassNames = __webpack_require__(437);
+
+	var _unionClassNames2 = _interopRequireDefault(_unionClassNames);
+
+	var _immutable = __webpack_require__(245);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	// The component we render when we encounter a hyperlink in the text
+
+	var Link = function (_Component) {
+	  _inherits(Link, _Component);
+
+	  function Link() {
+	    _classCallCheck(this, Link);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Link).apply(this, arguments));
+	  }
+
+	  _createClass(Link, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var _props$theme = _props.theme;
+	      var theme = _props$theme === undefined ? (0, _immutable.Map)() : _props$theme;
+	      var className = _props.className;
+
+	      var props = _objectWithoutProperties(_props, ['theme', 'className']); // eslint-disable-line no-use-before-define
+
+
+	      var combinedClassName = (0, _unionClassNames2.default)(theme.get('link'), className);
+	      return _react2.default.createElement('a', _extends({}, props, {
+	        href: this.props.decoratedText,
+	        className: combinedClassName
+	      }));
+	    }
+	  }]);
+
+	  return Link;
+	}(_react.Component);
+
+	exports.default = Link;
+
+/***/ },
+/* 437 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	exports.default = unionClassNames;
+	/**
+	 * Returns the union of the passed-in arrays: the list of unique items, in order,
+	 * that are present in one or more of the arrays.
+	 *
+	 * @param {...array} arrs - at least two iterable objects must be provide
+	 */
+	var union = function union() {
+	  for (var _len = arguments.length, arrs = Array(_len), _key = 0; _key < _len; _key++) {
+	    arrs[_key] = arguments[_key];
+	  }
+
+	  if (arrs) {
+	    var _ret = function () {
+	      var result = [];
+	      arrs.forEach(function (arr) {
+	        if (arr) {
+	          arr.forEach(function (obj) {
+	            if (result.indexOf(obj) < 0) {
+	              result.push(obj);
+	            }
+	          });
+	        }
+	      });
+	      return {
+	        v: result
+	      };
+	    }();
+
+	    if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	  }
+
+	  return undefined;
+	};
+
+	/**
+	 * Returns a string containing all classes without duplicates.
+	 *
+	 * @param existingClassNames {String} - one or multiple classes
+	 * @param additionalClassNames {String} - one or multiple classes
+	 *
+	 * @example
+	 * // returns 'style-id-23 button buy-button'
+	 * unionClassNames('style-id-23 button', 'button buy-button')
+	 *
+	 * Originally inspired by https://github.com/rackt/react-autocomplete/blob/master/lib/union-class-names.js
+	 */
+	function unionClassNames(existingClassNames, additionalClassNames) {
+	  if (!existingClassNames && !additionalClassNames) return '';
+	  if (!existingClassNames) return additionalClassNames;
+	  if (!additionalClassNames) return existingClassNames;
+	  return union(existingClassNames.split(' '), additionalClassNames.split(' ')).join(' ');
+	}
+
+/***/ },
+/* 438 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _linkifyIt = __webpack_require__(439);
+
+	var _linkifyIt2 = _interopRequireDefault(_linkifyIt);
+
+	var _tlds = __webpack_require__(445);
+
+	var _tlds2 = _interopRequireDefault(_tlds);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var linkify = (0, _linkifyIt2.default)();
+	linkify.tlds(_tlds2.default);
+
+	// Gets all the links in the text, and returns them via the callback
+	var linkStrategy = function linkStrategy(contentBlock, callback) {
+	  var links = linkify.match(contentBlock.get('text'));
+	  if (typeof links !== 'undefined' && links !== null) {
+	    for (var i = 0; i < links.length; i++) {
+	      callback(links[i].index, links[i].lastIndex);
+	    }
+	  }
+	};
+
+	exports.default = linkStrategy;
+
+/***/ },
+/* 439 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Helpers
+
+	// Merge objects
+	//
+	function assign(obj /*from1, from2, from3, ...*/) {
+	  var sources = Array.prototype.slice.call(arguments, 1);
+
+	  sources.forEach(function (source) {
+	    if (!source) { return; }
+
+	    Object.keys(source).forEach(function (key) {
+	      obj[key] = source[key];
+	    });
+	  });
+
+	  return obj;
+	}
+
+	function _class(obj) { return Object.prototype.toString.call(obj); }
+	function isString(obj) { return _class(obj) === '[object String]'; }
+	function isObject(obj) { return _class(obj) === '[object Object]'; }
+	function isRegExp(obj) { return _class(obj) === '[object RegExp]'; }
+	function isFunction(obj) { return _class(obj) === '[object Function]'; }
+
+
+	function escapeRE (str) { return str.replace(/[.?*+^$[\]\\(){}|-]/g, '\\$&'); }
+
+	////////////////////////////////////////////////////////////////////////////////
+
+
+	var defaultOptions = {
+	  fuzzyLink: true,
+	  fuzzyEmail: true,
+	  fuzzyIP: false
+	};
+
+
+	function isOptionsObj(obj) {
+	  return Object.keys(obj || {}).reduce(function (acc, k) {
+	    return acc || defaultOptions.hasOwnProperty(k);
+	  }, false);
+	}
+
+
+	var defaultSchemas = {
+	  'http:': {
+	    validate: function (text, pos, self) {
+	      var tail = text.slice(pos);
+
+	      if (!self.re.http) {
+	        // compile lazily, because "host"-containing variables can change on tlds update.
+	        self.re.http =  new RegExp(
+	          '^\\/\\/' + self.re.src_auth + self.re.src_host_port_strict + self.re.src_path, 'i'
+	        );
+	      }
+	      if (self.re.http.test(tail)) {
+	        return tail.match(self.re.http)[0].length;
+	      }
+	      return 0;
+	    }
+	  },
+	  'https:':  'http:',
+	  'ftp:':    'http:',
+	  '//':      {
+	    validate: function (text, pos, self) {
+	      var tail = text.slice(pos);
+
+	      if (!self.re.no_http) {
+	      // compile lazily, becayse "host"-containing variables can change on tlds update.
+	        self.re.no_http =  new RegExp(
+	          '^' + self.re.src_auth + self.re.src_host_port_strict + self.re.src_path, 'i'
+	        );
+	      }
+
+	      if (self.re.no_http.test(tail)) {
+	        // should not be `://`, that protects from errors in protocol name
+	        if (pos >= 3 && text[pos - 3] === ':') { return 0; }
+	        return tail.match(self.re.no_http)[0].length;
+	      }
+	      return 0;
+	    }
+	  },
+	  'mailto:': {
+	    validate: function (text, pos, self) {
+	      var tail = text.slice(pos);
+
+	      if (!self.re.mailto) {
+	        self.re.mailto =  new RegExp(
+	          '^' + self.re.src_email_name + '@' + self.re.src_host_strict, 'i'
+	        );
+	      }
+	      if (self.re.mailto.test(tail)) {
+	        return tail.match(self.re.mailto)[0].length;
+	      }
+	      return 0;
+	    }
+	  }
+	};
+
+	/*eslint-disable max-len*/
+
+	// RE pattern for 2-character tlds (autogenerated by ./support/tlds_2char_gen.js)
+	var tlds_2ch_src_re = 'a[cdefgilmnoqrstuwxz]|b[abdefghijmnorstvwyz]|c[acdfghiklmnoruvwxyz]|d[ejkmoz]|e[cegrstu]|f[ijkmor]|g[abdefghilmnpqrstuwy]|h[kmnrtu]|i[delmnoqrst]|j[emop]|k[eghimnprwyz]|l[abcikrstuvy]|m[acdeghklmnopqrstuvwxyz]|n[acefgilopruz]|om|p[aefghklmnrstwy]|qa|r[eosuw]|s[abcdeghijklmnortuvxyz]|t[cdfghjklmnortvwz]|u[agksyz]|v[aceginu]|w[fs]|y[et]|z[amw]';
+
+	// DON'T try to make PRs with changes. Extend TLDs with LinkifyIt.tlds() instead
+	var tlds_default = 'biz|com|edu|gov|net|org|pro|web|xxx|aero|asia|coop|info|museum|name|shop|рф'.split('|');
+
+	/*eslint-enable max-len*/
+
+	////////////////////////////////////////////////////////////////////////////////
+
+	function resetScanCache(self) {
+	  self.__index__ = -1;
+	  self.__text_cache__   = '';
+	}
+
+	function createValidator(re) {
+	  return function (text, pos) {
+	    var tail = text.slice(pos);
+
+	    if (re.test(tail)) {
+	      return tail.match(re)[0].length;
+	    }
+	    return 0;
+	  };
+	}
+
+	function createNormalizer() {
+	  return function (match, self) {
+	    self.normalize(match);
+	  };
+	}
+
+	// Schemas compiler. Build regexps.
+	//
+	function compile(self) {
+
+	  // Load & clone RE patterns.
+	  var re = self.re = assign({}, __webpack_require__(440));
+
+	  // Define dynamic patterns
+	  var tlds = self.__tlds__.slice();
+
+	  if (!self.__tlds_replaced__) {
+	    tlds.push(tlds_2ch_src_re);
+	  }
+	  tlds.push(re.src_xn);
+
+	  re.src_tlds = tlds.join('|');
+
+	  function untpl(tpl) { return tpl.replace('%TLDS%', re.src_tlds); }
+
+	  re.email_fuzzy      = RegExp(untpl(re.tpl_email_fuzzy), 'i');
+	  re.link_fuzzy       = RegExp(untpl(re.tpl_link_fuzzy), 'i');
+	  re.link_no_ip_fuzzy = RegExp(untpl(re.tpl_link_no_ip_fuzzy), 'i');
+	  re.host_fuzzy_test  = RegExp(untpl(re.tpl_host_fuzzy_test), 'i');
+
+	  //
+	  // Compile each schema
+	  //
+
+	  var aliases = [];
+
+	  self.__compiled__ = {}; // Reset compiled data
+
+	  function schemaError(name, val) {
+	    throw new Error('(LinkifyIt) Invalid schema "' + name + '": ' + val);
+	  }
+
+	  Object.keys(self.__schemas__).forEach(function (name) {
+	    var val = self.__schemas__[name];
+
+	    // skip disabled methods
+	    if (val === null) { return; }
+
+	    var compiled = { validate: null, link: null };
+
+	    self.__compiled__[name] = compiled;
+
+	    if (isObject(val)) {
+	      if (isRegExp(val.validate)) {
+	        compiled.validate = createValidator(val.validate);
+	      } else if (isFunction(val.validate)) {
+	        compiled.validate = val.validate;
+	      } else {
+	        schemaError(name, val);
+	      }
+
+	      if (isFunction(val.normalize)) {
+	        compiled.normalize = val.normalize;
+	      } else if (!val.normalize) {
+	        compiled.normalize = createNormalizer();
+	      } else {
+	        schemaError(name, val);
+	      }
+
+	      return;
+	    }
+
+	    if (isString(val)) {
+	      aliases.push(name);
+	      return;
+	    }
+
+	    schemaError(name, val);
+	  });
+
+	  //
+	  // Compile postponed aliases
+	  //
+
+	  aliases.forEach(function (alias) {
+	    if (!self.__compiled__[self.__schemas__[alias]]) {
+	      // Silently fail on missed schemas to avoid errons on disable.
+	      // schemaError(alias, self.__schemas__[alias]);
+	      return;
+	    }
+
+	    self.__compiled__[alias].validate =
+	      self.__compiled__[self.__schemas__[alias]].validate;
+	    self.__compiled__[alias].normalize =
+	      self.__compiled__[self.__schemas__[alias]].normalize;
+	  });
+
+	  //
+	  // Fake record for guessed links
+	  //
+	  self.__compiled__[''] = { validate: null, normalize: createNormalizer() };
+
+	  //
+	  // Build schema condition
+	  //
+	  var slist = Object.keys(self.__compiled__)
+	                      .filter(function(name) {
+	                        // Filter disabled & fake schemas
+	                        return name.length > 0 && self.__compiled__[name];
+	                      })
+	                      .map(escapeRE)
+	                      .join('|');
+	  // (?!_) cause 1.5x slowdown
+	  self.re.schema_test   = RegExp('(^|(?!_)(?:>|' + re.src_ZPCc + '))(' + slist + ')', 'i');
+	  self.re.schema_search = RegExp('(^|(?!_)(?:>|' + re.src_ZPCc + '))(' + slist + ')', 'ig');
+
+	  self.re.pretest       = RegExp(
+	                            '(' + self.re.schema_test.source + ')|' +
+	                            '(' + self.re.host_fuzzy_test.source + ')|' +
+	                            '@',
+	                            'i');
+
+	  //
+	  // Cleanup
+	  //
+
+	  resetScanCache(self);
+	}
+
+	/**
+	 * class Match
+	 *
+	 * Match result. Single element of array, returned by [[LinkifyIt#match]]
+	 **/
+	function Match(self, shift) {
+	  var start = self.__index__,
+	      end   = self.__last_index__,
+	      text  = self.__text_cache__.slice(start, end);
+
+	  /**
+	   * Match#schema -> String
+	   *
+	   * Prefix (protocol) for matched string.
+	   **/
+	  this.schema    = self.__schema__.toLowerCase();
+	  /**
+	   * Match#index -> Number
+	   *
+	   * First position of matched string.
+	   **/
+	  this.index     = start + shift;
+	  /**
+	   * Match#lastIndex -> Number
+	   *
+	   * Next position after matched string.
+	   **/
+	  this.lastIndex = end + shift;
+	  /**
+	   * Match#raw -> String
+	   *
+	   * Matched string.
+	   **/
+	  this.raw       = text;
+	  /**
+	   * Match#text -> String
+	   *
+	   * Notmalized text of matched string.
+	   **/
+	  this.text      = text;
+	  /**
+	   * Match#url -> String
+	   *
+	   * Normalized url of matched string.
+	   **/
+	  this.url       = text;
+	}
+
+	function createMatch(self, shift) {
+	  var match = new Match(self, shift);
+
+	  self.__compiled__[match.schema].normalize(match, self);
+
+	  return match;
+	}
+
+
+	/**
+	 * class LinkifyIt
+	 **/
+
+	/**
+	 * new LinkifyIt(schemas, options)
+	 * - schemas (Object): Optional. Additional schemas to validate (prefix/validator)
+	 * - options (Object): { fuzzyLink|fuzzyEmail|fuzzyIP: true|false }
+	 *
+	 * Creates new linkifier instance with optional additional schemas.
+	 * Can be called without `new` keyword for convenience.
+	 *
+	 * By default understands:
+	 *
+	 * - `http(s)://...` , `ftp://...`, `mailto:...` & `//...` links
+	 * - "fuzzy" links and emails (example.com, foo@bar.com).
+	 *
+	 * `schemas` is an object, where each key/value describes protocol/rule:
+	 *
+	 * - __key__ - link prefix (usually, protocol name with `:` at the end, `skype:`
+	 *   for example). `linkify-it` makes shure that prefix is not preceeded with
+	 *   alphanumeric char and symbols. Only whitespaces and punctuation allowed.
+	 * - __value__ - rule to check tail after link prefix
+	 *   - _String_ - just alias to existing rule
+	 *   - _Object_
+	 *     - _validate_ - validator function (should return matched length on success),
+	 *       or `RegExp`.
+	 *     - _normalize_ - optional function to normalize text & url of matched result
+	 *       (for example, for @twitter mentions).
+	 *
+	 * `options`:
+	 *
+	 * - __fuzzyLink__ - recognige URL-s without `http(s):` prefix. Default `true`.
+	 * - __fuzzyIP__ - allow IPs in fuzzy links above. Can conflict with some texts
+	 *   like version numbers. Default `false`.
+	 * - __fuzzyEmail__ - recognize emails without `mailto:` prefix.
+	 *
+	 **/
+	function LinkifyIt(schemas, options) {
+	  if (!(this instanceof LinkifyIt)) {
+	    return new LinkifyIt(schemas, options);
+	  }
+
+	  if (!options) {
+	    if (isOptionsObj(schemas)) {
+	      options = schemas;
+	      schemas = {};
+	    }
+	  }
+
+	  this.__opts__           = assign({}, defaultOptions, options);
+
+	  // Cache last tested result. Used to skip repeating steps on next `match` call.
+	  this.__index__          = -1;
+	  this.__last_index__     = -1; // Next scan position
+	  this.__schema__         = '';
+	  this.__text_cache__     = '';
+
+	  this.__schemas__        = assign({}, defaultSchemas, schemas);
+	  this.__compiled__       = {};
+
+	  this.__tlds__           = tlds_default;
+	  this.__tlds_replaced__  = false;
+
+	  this.re = {};
+
+	  compile(this);
+	}
+
+
+	/** chainable
+	 * LinkifyIt#add(schema, definition)
+	 * - schema (String): rule name (fixed pattern prefix)
+	 * - definition (String|RegExp|Object): schema definition
+	 *
+	 * Add new rule definition. See constructor description for details.
+	 **/
+	LinkifyIt.prototype.add = function add(schema, definition) {
+	  this.__schemas__[schema] = definition;
+	  compile(this);
+	  return this;
+	};
+
+
+	/** chainable
+	 * LinkifyIt#set(options)
+	 * - options (Object): { fuzzyLink|fuzzyEmail|fuzzyIP: true|false }
+	 *
+	 * Set recognition options for links without schema.
+	 **/
+	LinkifyIt.prototype.set = function set(options) {
+	  this.__opts__ = assign(this.__opts__, options);
+	  return this;
+	};
+
+
+	/**
+	 * LinkifyIt#test(text) -> Boolean
+	 *
+	 * Searches linkifiable pattern and returns `true` on success or `false` on fail.
+	 **/
+	LinkifyIt.prototype.test = function test(text) {
+	  // Reset scan cache
+	  this.__text_cache__ = text;
+	  this.__index__      = -1;
+
+	  if (!text.length) { return false; }
+
+	  var m, ml, me, len, shift, next, re, tld_pos, at_pos;
+
+	  // try to scan for link with schema - that's the most simple rule
+	  if (this.re.schema_test.test(text)) {
+	    re = this.re.schema_search;
+	    re.lastIndex = 0;
+	    while ((m = re.exec(text)) !== null) {
+	      len = this.testSchemaAt(text, m[2], re.lastIndex);
+	      if (len) {
+	        this.__schema__     = m[2];
+	        this.__index__      = m.index + m[1].length;
+	        this.__last_index__ = m.index + m[0].length + len;
+	        break;
+	      }
+	    }
+	  }
+
+	  if (this.__opts__.fuzzyLink && this.__compiled__['http:']) {
+	    // guess schemaless links
+	    tld_pos = text.search(this.re.host_fuzzy_test);
+	    if (tld_pos >= 0) {
+	      // if tld is located after found link - no need to check fuzzy pattern
+	      if (this.__index__ < 0 || tld_pos < this.__index__) {
+	        if ((ml = text.match(this.__opts__.fuzzyIP ? this.re.link_fuzzy : this.re.link_no_ip_fuzzy)) !== null) {
+
+	          shift = ml.index + ml[1].length;
+
+	          if (this.__index__ < 0 || shift < this.__index__) {
+	            this.__schema__     = '';
+	            this.__index__      = shift;
+	            this.__last_index__ = ml.index + ml[0].length;
+	          }
+	        }
+	      }
+	    }
+	  }
+
+	  if (this.__opts__.fuzzyEmail && this.__compiled__['mailto:']) {
+	    // guess schemaless emails
+	    at_pos = text.indexOf('@');
+	    if (at_pos >= 0) {
+	      // We can't skip this check, because this cases are possible:
+	      // 192.168.1.1@gmail.com, my.in@example.com
+	      if ((me = text.match(this.re.email_fuzzy)) !== null) {
+
+	        shift = me.index + me[1].length;
+	        next  = me.index + me[0].length;
+
+	        if (this.__index__ < 0 || shift < this.__index__ ||
+	            (shift === this.__index__ && next > this.__last_index__)) {
+	          this.__schema__     = 'mailto:';
+	          this.__index__      = shift;
+	          this.__last_index__ = next;
+	        }
+	      }
+	    }
+	  }
+
+	  return this.__index__ >= 0;
+	};
+
+
+	/**
+	 * LinkifyIt#pretest(text) -> Boolean
+	 *
+	 * Very quick check, that can give false positives. Returns true if link MAY BE
+	 * can exists. Can be used for speed optimization, when you need to check that
+	 * link NOT exists.
+	 **/
+	LinkifyIt.prototype.pretest = function pretest(text) {
+	  return this.re.pretest.test(text);
+	};
+
+
+	/**
+	 * LinkifyIt#testSchemaAt(text, name, position) -> Number
+	 * - text (String): text to scan
+	 * - name (String): rule (schema) name
+	 * - position (Number): text offset to check from
+	 *
+	 * Similar to [[LinkifyIt#test]] but checks only specific protocol tail exactly
+	 * at given position. Returns length of found pattern (0 on fail).
+	 **/
+	LinkifyIt.prototype.testSchemaAt = function testSchemaAt(text, schema, pos) {
+	  // If not supported schema check requested - terminate
+	  if (!this.__compiled__[schema.toLowerCase()]) {
+	    return 0;
+	  }
+	  return this.__compiled__[schema.toLowerCase()].validate(text, pos, this);
+	};
+
+
+	/**
+	 * LinkifyIt#match(text) -> Array|null
+	 *
+	 * Returns array of found link descriptions or `null` on fail. We strongly
+	 * to use [[LinkifyIt#test]] first, for best speed.
+	 *
+	 * ##### Result match description
+	 *
+	 * - __schema__ - link schema, can be empty for fuzzy links, or `//` for
+	 *   protocol-neutral  links.
+	 * - __index__ - offset of matched text
+	 * - __lastIndex__ - index of next char after mathch end
+	 * - __raw__ - matched text
+	 * - __text__ - normalized text
+	 * - __url__ - link, generated from matched text
+	 **/
+	LinkifyIt.prototype.match = function match(text) {
+	  var shift = 0, result = [];
+
+	  // Try to take previous element from cache, if .test() called before
+	  if (this.__index__ >= 0 && this.__text_cache__ === text) {
+	    result.push(createMatch(this, shift));
+	    shift = this.__last_index__;
+	  }
+
+	  // Cut head if cache was used
+	  var tail = shift ? text.slice(shift) : text;
+
+	  // Scan string until end reached
+	  while (this.test(tail)) {
+	    result.push(createMatch(this, shift));
+
+	    tail = tail.slice(this.__last_index__);
+	    shift += this.__last_index__;
+	  }
+
+	  if (result.length) {
+	    return result;
+	  }
+
+	  return null;
+	};
+
+
+	/** chainable
+	 * LinkifyIt#tlds(list [, keepOld]) -> this
+	 * - list (Array): list of tlds
+	 * - keepOld (Boolean): merge with current list if `true` (`false` by default)
+	 *
+	 * Load (or merge) new tlds list. Those are user for fuzzy links (without prefix)
+	 * to avoid false positives. By default this algorythm used:
+	 *
+	 * - hostname with any 2-letter root zones are ok.
+	 * - biz|com|edu|gov|net|org|pro|web|xxx|aero|asia|coop|info|museum|name|shop|рф
+	 *   are ok.
+	 * - encoded (`xn--...`) root zones are ok.
+	 *
+	 * If list is replaced, then exact match for 2-chars root zones will be checked.
+	 **/
+	LinkifyIt.prototype.tlds = function tlds(list, keepOld) {
+	  list = Array.isArray(list) ? list : [ list ];
+
+	  if (!keepOld) {
+	    this.__tlds__ = list.slice();
+	    this.__tlds_replaced__ = true;
+	    compile(this);
+	    return this;
+	  }
+
+	  this.__tlds__ = this.__tlds__.concat(list)
+	                                  .sort()
+	                                  .filter(function(el, idx, arr) {
+	                                    return el !== arr[idx - 1];
+	                                  })
+	                                  .reverse();
+
+	  compile(this);
+	  return this;
+	};
+
+	/**
+	 * LinkifyIt#normalize(match)
+	 *
+	 * Default normalizer (if schema does not define it's own).
+	 **/
+	LinkifyIt.prototype.normalize = function normalize(match) {
+
+	  // Do minimal possible changes by default. Need to collect feedback prior
+	  // to move forward https://github.com/markdown-it/linkify-it/issues/1
+
+	  if (!match.schema) { match.url = 'http://' + match.url; }
+
+	  if (match.schema === 'mailto:' && !/^mailto:/i.test(match.url)) {
+	    match.url = 'mailto:' + match.url;
+	  }
+	};
+
+
+	module.exports = LinkifyIt;
+
+
+/***/ },
+/* 440 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// Use direct extract instead of `regenerate` to reduse browserified size
+	var src_Any = exports.src_Any = __webpack_require__(441).source;
+	var src_Cc  = exports.src_Cc = __webpack_require__(442).source;
+	var src_Z   = exports.src_Z  = __webpack_require__(443).source;
+	var src_P   = exports.src_P  = __webpack_require__(444).source;
+
+	// \p{\Z\P\Cc\CF} (white spaces + control + format + punctuation)
+	var src_ZPCc = exports.src_ZPCc = [ src_Z, src_P, src_Cc ].join('|');
+
+	// \p{\Z\Cc} (white spaces + control)
+	var src_ZCc = exports.src_ZCc = [ src_Z, src_Cc ].join('|');
+
+	// All possible word characters (everything without punctuation, spaces & controls)
+	// Defined via punctuation & spaces to save space
+	// Should be something like \p{\L\N\S\M} (\w but without `_`)
+	var src_pseudo_letter       = '(?:(?!' + src_ZPCc + ')' + src_Any + ')';
+	// The same as abothe but without [0-9]
+	var src_pseudo_letter_non_d = '(?:(?![0-9]|' + src_ZPCc + ')' + src_Any + ')';
+
+	////////////////////////////////////////////////////////////////////////////////
+
+	var src_ip4 = exports.src_ip4 =
+
+	  '(?:(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)';
+
+	exports.src_auth    = '(?:(?:(?!' + src_ZCc + ').)+@)?';
+
+	var src_port = exports.src_port =
+
+	  '(?::(?:6(?:[0-4]\\d{3}|5(?:[0-4]\\d{2}|5(?:[0-2]\\d|3[0-5])))|[1-5]?\\d{1,4}))?';
+
+	var src_host_terminator = exports.src_host_terminator =
+
+	  '(?=$|' + src_ZPCc + ')(?!-|_|:\\d|\\.-|\\.(?!$|' + src_ZPCc + '))';
+
+	var src_path = exports.src_path =
+
+	  '(?:' +
+	    '[/?#]' +
+	      '(?:' +
+	        '(?!' + src_ZCc + '|[()[\\]{}.,"\'?!\\-]).|' +
+	        '\\[(?:(?!' + src_ZCc + '|\\]).)*\\]|' +
+	        '\\((?:(?!' + src_ZCc + '|[)]).)*\\)|' +
+	        '\\{(?:(?!' + src_ZCc + '|[}]).)*\\}|' +
+	        '\\"(?:(?!' + src_ZCc + '|["]).)+\\"|' +
+	        "\\'(?:(?!" + src_ZCc + "|[']).)+\\'|" +
+	        "\\'(?=" + src_pseudo_letter + ').|' +  // allow `I'm_king` if no pair found
+	        '\\.{2,3}[a-zA-Z0-9%/]|' + // github has ... in commit range links. Restrict to
+	                                   // - english
+	                                   // - percent-encoded
+	                                   // - parts of file path
+	                                   // until more examples found.
+	        '\\.(?!' + src_ZCc + '|[.]).|' +
+	        '\\-(?!--(?:[^-]|$))(?:-*)|' +  // `---` => long dash, terminate
+	        '\\,(?!' + src_ZCc + ').|' +      // allow `,,,` in paths
+	        '\\!(?!' + src_ZCc + '|[!]).|' +
+	        '\\?(?!' + src_ZCc + '|[?]).' +
+	      ')+' +
+	    '|\\/' +
+	  ')?';
+
+	var src_email_name = exports.src_email_name =
+
+	  '[\\-;:&=\\+\\$,\\"\\.a-zA-Z0-9_]+';
+
+	var src_xn = exports.src_xn =
+
+	  'xn--[a-z0-9\\-]{1,59}';
+
+	// More to read about domain names
+	// http://serverfault.com/questions/638260/
+
+	var src_domain_root = exports.src_domain_root =
+
+	  // Can't have digits and dashes
+	  '(?:' +
+	    src_xn +
+	    '|' +
+	    src_pseudo_letter_non_d + '{1,63}' +
+	  ')';
+
+	var src_domain = exports.src_domain =
+
+	  '(?:' +
+	    src_xn +
+	    '|' +
+	    '(?:' + src_pseudo_letter + ')' +
+	    '|' +
+	    // don't allow `--` in domain names, because:
+	    // - that can conflict with markdown &mdash; / &ndash;
+	    // - nobody use those anyway
+	    '(?:' + src_pseudo_letter + '(?:-(?!-)|' + src_pseudo_letter + '){0,61}' + src_pseudo_letter + ')' +
+	  ')';
+
+	var src_host = exports.src_host =
+
+	  '(?:' +
+	    src_ip4 +
+	  '|' +
+	    '(?:(?:(?:' + src_domain + ')\\.)*' + src_domain_root + ')' +
+	  ')';
+
+	var tpl_host_fuzzy = exports.tpl_host_fuzzy =
+
+	  '(?:' +
+	    src_ip4 +
+	  '|' +
+	    '(?:(?:(?:' + src_domain + ')\\.)+(?:%TLDS%))' +
+	  ')';
+
+	var tpl_host_no_ip_fuzzy = exports.tpl_host_no_ip_fuzzy =
+
+	  '(?:(?:(?:' + src_domain + ')\\.)+(?:%TLDS%))';
+
+	exports.src_host_strict =
+
+	  src_host + src_host_terminator;
+
+	var tpl_host_fuzzy_strict = exports.tpl_host_fuzzy_strict =
+
+	  tpl_host_fuzzy + src_host_terminator;
+
+	exports.src_host_port_strict =
+
+	  src_host + src_port + src_host_terminator;
+
+	var tpl_host_port_fuzzy_strict = exports.tpl_host_port_fuzzy_strict =
+
+	  tpl_host_fuzzy + src_port + src_host_terminator;
+
+	var tpl_host_port_no_ip_fuzzy_strict = exports.tpl_host_port_no_ip_fuzzy_strict =
+
+	  tpl_host_no_ip_fuzzy + src_port + src_host_terminator;
+
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Main rules
+
+	// Rude test fuzzy links by host, for quick deny
+	exports.tpl_host_fuzzy_test =
+
+	  'localhost|\\.\\d{1,3}\\.|(?:\\.(?:%TLDS%)(?:' + src_ZPCc + '|$))';
+
+	exports.tpl_email_fuzzy =
+
+	    '(^|>|' + src_ZCc + ')(' + src_email_name + '@' + tpl_host_fuzzy_strict + ')';
+
+	exports.tpl_link_fuzzy =
+	    // Fuzzy link can't be prepended with .:/\- and non punctuation.
+	    // but can start with > (markdown blockquote)
+	    '(^|(?![.:/\\-_@])(?:[$+<=>^`|]|' + src_ZPCc + '))' +
+	    '((?![$+<=>^`|])' + tpl_host_port_fuzzy_strict + src_path + ')';
+
+	exports.tpl_link_no_ip_fuzzy =
+	    // Fuzzy link can't be prepended with .:/\- and non punctuation.
+	    // but can start with > (markdown blockquote)
+	    '(^|(?![.:/\\-_@])(?:[$+<=>^`|]|' + src_ZPCc + '))' +
+	    '((?![$+<=>^`|])' + tpl_host_port_no_ip_fuzzy_strict + src_path + ')';
+
+
+/***/ },
+/* 441 */
+/***/ function(module, exports) {
+
+	module.exports=/[\0-\uD7FF\uDC00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF]/
+
+/***/ },
+/* 442 */
+/***/ function(module, exports) {
+
+	module.exports=/[\0-\x1F\x7F-\x9F]/
+
+/***/ },
+/* 443 */
+/***/ function(module, exports) {
+
+	module.exports=/[ \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/
+
+/***/ },
+/* 444 */
+/***/ function(module, exports) {
+
+	module.exports=/[!-#%-\*,-/:;\?@\[-\]_\{\}\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E42\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC8\uDDCD\uDE38-\uDE3D]|\uD805[\uDCC6\uDDC1-\uDDC9\uDE41-\uDE43]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F/
+
+/***/ },
+/* 445 */
+/***/ function(module, exports) {
+
+	module.exports = [
+	  "aaa",
+	  "aarp",
+	  "abb",
+	  "abbott",
+	  "abogado",
+	  "ac",
+	  "academy",
+	  "accenture",
+	  "accountant",
+	  "accountants",
+	  "aco",
+	  "active",
+	  "actor",
+	  "ad",
+	  "adac",
+	  "ads",
+	  "adult",
+	  "ae",
+	  "aeg",
+	  "aero",
+	  "af",
+	  "afl",
+	  "ag",
+	  "agency",
+	  "ai",
+	  "aig",
+	  "airforce",
+	  "airtel",
+	  "al",
+	  "alibaba",
+	  "alipay",
+	  "allfinanz",
+	  "alsace",
+	  "am",
+	  "amica",
+	  "amsterdam",
+	  "analytics",
+	  "android",
+	  "ao",
+	  "apartments",
+	  "app",
+	  "apple",
+	  "aq",
+	  "aquarelle",
+	  "ar",
+	  "aramco",
+	  "archi",
+	  "army",
+	  "arpa",
+	  "arte",
+	  "as",
+	  "asia",
+	  "associates",
+	  "at",
+	  "attorney",
+	  "au",
+	  "auction",
+	  "audi",
+	  "audio",
+	  "author",
+	  "auto",
+	  "autos",
+	  "avianca",
+	  "aw",
+	  "ax",
+	  "axa",
+	  "az",
+	  "azure",
+	  "ba",
+	  "baidu",
+	  "band",
+	  "bank",
+	  "bar",
+	  "barcelona",
+	  "barclaycard",
+	  "barclays",
+	  "bargains",
+	  "bauhaus",
+	  "bayern",
+	  "bb",
+	  "bbc",
+	  "bbva",
+	  "bcg",
+	  "bcn",
+	  "bd",
+	  "be",
+	  "beats",
+	  "beer",
+	  "bentley",
+	  "berlin",
+	  "best",
+	  "bet",
+	  "bf",
+	  "bg",
+	  "bh",
+	  "bharti",
+	  "bi",
+	  "bible",
+	  "bid",
+	  "bike",
+	  "bing",
+	  "bingo",
+	  "bio",
+	  "biz",
+	  "bj",
+	  "black",
+	  "blackfriday",
+	  "bloomberg",
+	  "blue",
+	  "bm",
+	  "bms",
+	  "bmw",
+	  "bn",
+	  "bnl",
+	  "bnpparibas",
+	  "bo",
+	  "boats",
+	  "boehringer",
+	  "bom",
+	  "bond",
+	  "boo",
+	  "book",
+	  "boots",
+	  "bosch",
+	  "bostik",
+	  "bot",
+	  "boutique",
+	  "br",
+	  "bradesco",
+	  "bridgestone",
+	  "broadway",
+	  "broker",
+	  "brother",
+	  "brussels",
+	  "bs",
+	  "bt",
+	  "budapest",
+	  "bugatti",
+	  "build",
+	  "builders",
+	  "business",
+	  "buy",
+	  "buzz",
+	  "bv",
+	  "bw",
+	  "by",
+	  "bz",
+	  "bzh",
+	  "ca",
+	  "cab",
+	  "cafe",
+	  "cal",
+	  "call",
+	  "camera",
+	  "camp",
+	  "cancerresearch",
+	  "canon",
+	  "capetown",
+	  "capital",
+	  "car",
+	  "caravan",
+	  "cards",
+	  "care",
+	  "career",
+	  "careers",
+	  "cars",
+	  "cartier",
+	  "casa",
+	  "cash",
+	  "casino",
+	  "cat",
+	  "catering",
+	  "cba",
+	  "cbn",
+	  "cc",
+	  "cd",
+	  "ceb",
+	  "center",
+	  "ceo",
+	  "cern",
+	  "cf",
+	  "cfa",
+	  "cfd",
+	  "cg",
+	  "ch",
+	  "chanel",
+	  "channel",
+	  "chase",
+	  "chat",
+	  "cheap",
+	  "chloe",
+	  "christmas",
+	  "chrome",
+	  "church",
+	  "ci",
+	  "cipriani",
+	  "circle",
+	  "cisco",
+	  "citic",
+	  "city",
+	  "cityeats",
+	  "ck",
+	  "cl",
+	  "claims",
+	  "cleaning",
+	  "click",
+	  "clinic",
+	  "clinique",
+	  "clothing",
+	  "cloud",
+	  "club",
+	  "clubmed",
+	  "cm",
+	  "cn",
+	  "co",
+	  "coach",
+	  "codes",
+	  "coffee",
+	  "college",
+	  "cologne",
+	  "com",
+	  "commbank",
+	  "community",
+	  "company",
+	  "compare",
+	  "computer",
+	  "comsec",
+	  "condos",
+	  "construction",
+	  "consulting",
+	  "contact",
+	  "contractors",
+	  "cooking",
+	  "cool",
+	  "coop",
+	  "corsica",
+	  "country",
+	  "coupon",
+	  "coupons",
+	  "courses",
+	  "cr",
+	  "credit",
+	  "creditcard",
+	  "creditunion",
+	  "cricket",
+	  "crown",
+	  "crs",
+	  "cruises",
+	  "csc",
+	  "cu",
+	  "cuisinella",
+	  "cv",
+	  "cw",
+	  "cx",
+	  "cy",
+	  "cymru",
+	  "cyou",
+	  "cz",
+	  "dabur",
+	  "dad",
+	  "dance",
+	  "date",
+	  "dating",
+	  "datsun",
+	  "day",
+	  "dclk",
+	  "de",
+	  "dealer",
+	  "deals",
+	  "degree",
+	  "delivery",
+	  "dell",
+	  "deloitte",
+	  "delta",
+	  "democrat",
+	  "dental",
+	  "dentist",
+	  "desi",
+	  "design",
+	  "dev",
+	  "diamonds",
+	  "diet",
+	  "digital",
+	  "direct",
+	  "directory",
+	  "discount",
+	  "dj",
+	  "dk",
+	  "dm",
+	  "dnp",
+	  "do",
+	  "docs",
+	  "dog",
+	  "doha",
+	  "domains",
+	  "download",
+	  "drive",
+	  "dubai",
+	  "durban",
+	  "dvag",
+	  "dz",
+	  "earth",
+	  "eat",
+	  "ec",
+	  "edeka",
+	  "edu",
+	  "education",
+	  "ee",
+	  "eg",
+	  "email",
+	  "emerck",
+	  "energy",
+	  "engineer",
+	  "engineering",
+	  "enterprises",
+	  "epson",
+	  "equipment",
+	  "er",
+	  "erni",
+	  "es",
+	  "esq",
+	  "estate",
+	  "et",
+	  "eu",
+	  "eurovision",
+	  "eus",
+	  "events",
+	  "everbank",
+	  "exchange",
+	  "expert",
+	  "exposed",
+	  "express",
+	  "fage",
+	  "fail",
+	  "fairwinds",
+	  "faith",
+	  "family",
+	  "fan",
+	  "fans",
+	  "farm",
+	  "fashion",
+	  "fast",
+	  "feedback",
+	  "ferrero",
+	  "fi",
+	  "film",
+	  "final",
+	  "finance",
+	  "financial",
+	  "firestone",
+	  "firmdale",
+	  "fish",
+	  "fishing",
+	  "fit",
+	  "fitness",
+	  "fj",
+	  "fk",
+	  "flickr",
+	  "flights",
+	  "florist",
+	  "flowers",
+	  "flsmidth",
+	  "fly",
+	  "fm",
+	  "fo",
+	  "foo",
+	  "football",
+	  "ford",
+	  "forex",
+	  "forsale",
+	  "forum",
+	  "foundation",
+	  "fox",
+	  "fr",
+	  "fresenius",
+	  "frl",
+	  "frogans",
+	  "frontier",
+	  "fund",
+	  "furniture",
+	  "futbol",
+	  "fyi",
+	  "ga",
+	  "gal",
+	  "gallery",
+	  "gallup",
+	  "game",
+	  "garden",
+	  "gb",
+	  "gbiz",
+	  "gd",
+	  "gdn",
+	  "ge",
+	  "gea",
+	  "gent",
+	  "genting",
+	  "gf",
+	  "gg",
+	  "ggee",
+	  "gh",
+	  "gi",
+	  "gift",
+	  "gifts",
+	  "gives",
+	  "giving",
+	  "gl",
+	  "glass",
+	  "gle",
+	  "global",
+	  "globo",
+	  "gm",
+	  "gmail",
+	  "gmbh",
+	  "gmo",
+	  "gmx",
+	  "gn",
+	  "gold",
+	  "goldpoint",
+	  "golf",
+	  "goo",
+	  "goog",
+	  "google",
+	  "gop",
+	  "got",
+	  "gov",
+	  "gp",
+	  "gq",
+	  "gr",
+	  "grainger",
+	  "graphics",
+	  "gratis",
+	  "green",
+	  "gripe",
+	  "group",
+	  "gs",
+	  "gt",
+	  "gu",
+	  "gucci",
+	  "guge",
+	  "guide",
+	  "guitars",
+	  "guru",
+	  "gw",
+	  "gy",
+	  "hamburg",
+	  "hangout",
+	  "haus",
+	  "hdfcbank",
+	  "health",
+	  "healthcare",
+	  "help",
+	  "helsinki",
+	  "here",
+	  "hermes",
+	  "hiphop",
+	  "hitachi",
+	  "hiv",
+	  "hk",
+	  "hm",
+	  "hn",
+	  "hockey",
+	  "holdings",
+	  "holiday",
+	  "homedepot",
+	  "homes",
+	  "honda",
+	  "horse",
+	  "host",
+	  "hosting",
+	  "hoteles",
+	  "hotmail",
+	  "house",
+	  "how",
+	  "hr",
+	  "hsbc",
+	  "ht",
+	  "hu",
+	  "hyundai",
+	  "ibm",
+	  "icbc",
+	  "ice",
+	  "icu",
+	  "id",
+	  "ie",
+	  "ifm",
+	  "iinet",
+	  "il",
+	  "im",
+	  "immo",
+	  "immobilien",
+	  "in",
+	  "industries",
+	  "infiniti",
+	  "info",
+	  "ing",
+	  "ink",
+	  "institute",
+	  "insurance",
+	  "insure",
+	  "int",
+	  "international",
+	  "investments",
+	  "io",
+	  "ipiranga",
+	  "iq",
+	  "ir",
+	  "irish",
+	  "is",
+	  "iselect",
+	  "ist",
+	  "istanbul",
+	  "it",
+	  "itau",
+	  "iwc",
+	  "jaguar",
+	  "java",
+	  "jcb",
+	  "je",
+	  "jetzt",
+	  "jewelry",
+	  "jlc",
+	  "jll",
+	  "jm",
+	  "jmp",
+	  "jo",
+	  "jobs",
+	  "joburg",
+	  "jot",
+	  "joy",
+	  "jp",
+	  "jpmorgan",
+	  "jprs",
+	  "juegos",
+	  "kaufen",
+	  "kddi",
+	  "ke",
+	  "kerryhotels",
+	  "kerrylogistics",
+	  "kerryproperties",
+	  "kfh",
+	  "kg",
+	  "kh",
+	  "ki",
+	  "kia",
+	  "kim",
+	  "kinder",
+	  "kitchen",
+	  "kiwi",
+	  "km",
+	  "kn",
+	  "koeln",
+	  "komatsu",
+	  "kp",
+	  "kpn",
+	  "kr",
+	  "krd",
+	  "kred",
+	  "kuokgroup",
+	  "kw",
+	  "ky",
+	  "kyoto",
+	  "kz",
+	  "la",
+	  "lacaixa",
+	  "lamborghini",
+	  "lamer",
+	  "lancaster",
+	  "land",
+	  "landrover",
+	  "lanxess",
+	  "lasalle",
+	  "lat",
+	  "latrobe",
+	  "law",
+	  "lawyer",
+	  "lb",
+	  "lc",
+	  "lds",
+	  "lease",
+	  "leclerc",
+	  "legal",
+	  "lexus",
+	  "lgbt",
+	  "li",
+	  "liaison",
+	  "lidl",
+	  "life",
+	  "lifeinsurance",
+	  "lifestyle",
+	  "lighting",
+	  "like",
+	  "limited",
+	  "limo",
+	  "lincoln",
+	  "linde",
+	  "link",
+	  "live",
+	  "living",
+	  "lixil",
+	  "lk",
+	  "loan",
+	  "loans",
+	  "locus",
+	  "lol",
+	  "london",
+	  "lotte",
+	  "lotto",
+	  "love",
+	  "lr",
+	  "ls",
+	  "lt",
+	  "ltd",
+	  "ltda",
+	  "lu",
+	  "lupin",
+	  "luxe",
+	  "luxury",
+	  "lv",
+	  "ly",
+	  "ma",
+	  "madrid",
+	  "maif",
+	  "maison",
+	  "makeup",
+	  "man",
+	  "management",
+	  "mango",
+	  "market",
+	  "marketing",
+	  "markets",
+	  "marriott",
+	  "mba",
+	  "mc",
+	  "md",
+	  "me",
+	  "med",
+	  "media",
+	  "meet",
+	  "melbourne",
+	  "meme",
+	  "memorial",
+	  "men",
+	  "menu",
+	  "meo",
+	  "mg",
+	  "mh",
+	  "miami",
+	  "microsoft",
+	  "mil",
+	  "mini",
+	  "mk",
+	  "ml",
+	  "mm",
+	  "mma",
+	  "mn",
+	  "mo",
+	  "mobi",
+	  "mobily",
+	  "moda",
+	  "moe",
+	  "moi",
+	  "mom",
+	  "monash",
+	  "money",
+	  "montblanc",
+	  "mormon",
+	  "mortgage",
+	  "moscow",
+	  "motorcycles",
+	  "mov",
+	  "movie",
+	  "movistar",
+	  "mp",
+	  "mq",
+	  "mr",
+	  "ms",
+	  "mt",
+	  "mtn",
+	  "mtpc",
+	  "mtr",
+	  "mu",
+	  "museum",
+	  "mutuelle",
+	  "mv",
+	  "mw",
+	  "mx",
+	  "my",
+	  "mz",
+	  "na",
+	  "nadex",
+	  "nagoya",
+	  "name",
+	  "natura",
+	  "navy",
+	  "nc",
+	  "ne",
+	  "nec",
+	  "net",
+	  "netbank",
+	  "network",
+	  "neustar",
+	  "new",
+	  "news",
+	  "nexus",
+	  "nf",
+	  "ng",
+	  "ngo",
+	  "nhk",
+	  "ni",
+	  "nico",
+	  "nikon",
+	  "ninja",
+	  "nissan",
+	  "nl",
+	  "no",
+	  "nokia",
+	  "norton",
+	  "nowruz",
+	  "np",
+	  "nr",
+	  "nra",
+	  "nrw",
+	  "ntt",
+	  "nu",
+	  "nyc",
+	  "nz",
+	  "obi",
+	  "office",
+	  "okinawa",
+	  "om",
+	  "omega",
+	  "one",
+	  "ong",
+	  "onl",
+	  "online",
+	  "ooo",
+	  "oracle",
+	  "orange",
+	  "org",
+	  "organic",
+	  "origins",
+	  "osaka",
+	  "otsuka",
+	  "ovh",
+	  "pa",
+	  "page",
+	  "pamperedchef",
+	  "panerai",
+	  "paris",
+	  "pars",
+	  "partners",
+	  "parts",
+	  "party",
+	  "passagens",
+	  "pe",
+	  "pet",
+	  "pf",
+	  "pg",
+	  "ph",
+	  "pharmacy",
+	  "philips",
+	  "photo",
+	  "photography",
+	  "photos",
+	  "physio",
+	  "piaget",
+	  "pics",
+	  "pictet",
+	  "pictures",
+	  "pid",
+	  "pin",
+	  "ping",
+	  "pink",
+	  "pizza",
+	  "pk",
+	  "pl",
+	  "place",
+	  "play",
+	  "playstation",
+	  "plumbing",
+	  "plus",
+	  "pm",
+	  "pn",
+	  "pohl",
+	  "poker",
+	  "porn",
+	  "post",
+	  "pr",
+	  "praxi",
+	  "press",
+	  "pro",
+	  "prod",
+	  "productions",
+	  "prof",
+	  "promo",
+	  "properties",
+	  "property",
+	  "protection",
+	  "ps",
+	  "pt",
+	  "pub",
+	  "pw",
+	  "pwc",
+	  "py",
+	  "qa",
+	  "qpon",
+	  "quebec",
+	  "quest",
+	  "racing",
+	  "re",
+	  "read",
+	  "realtor",
+	  "realty",
+	  "recipes",
+	  "red",
+	  "redstone",
+	  "redumbrella",
+	  "rehab",
+	  "reise",
+	  "reisen",
+	  "reit",
+	  "ren",
+	  "rent",
+	  "rentals",
+	  "repair",
+	  "report",
+	  "republican",
+	  "rest",
+	  "restaurant",
+	  "review",
+	  "reviews",
+	  "rexroth",
+	  "rich",
+	  "ricoh",
+	  "rio",
+	  "rip",
+	  "ro",
+	  "rocher",
+	  "rocks",
+	  "rodeo",
+	  "room",
+	  "rs",
+	  "rsvp",
+	  "ru",
+	  "ruhr",
+	  "run",
+	  "rw",
+	  "rwe",
+	  "ryukyu",
+	  "sa",
+	  "saarland",
+	  "safe",
+	  "safety",
+	  "sakura",
+	  "sale",
+	  "salon",
+	  "samsung",
+	  "sandvik",
+	  "sandvikcoromant",
+	  "sanofi",
+	  "sap",
+	  "sapo",
+	  "sarl",
+	  "sas",
+	  "saxo",
+	  "sb",
+	  "sbs",
+	  "sc",
+	  "sca",
+	  "scb",
+	  "schaeffler",
+	  "schmidt",
+	  "scholarships",
+	  "school",
+	  "schule",
+	  "schwarz",
+	  "science",
+	  "scor",
+	  "scot",
+	  "sd",
+	  "se",
+	  "seat",
+	  "security",
+	  "seek",
+	  "select",
+	  "sener",
+	  "services",
+	  "seven",
+	  "sew",
+	  "sex",
+	  "sexy",
+	  "sfr",
+	  "sg",
+	  "sh",
+	  "sharp",
+	  "shell",
+	  "shia",
+	  "shiksha",
+	  "shoes",
+	  "show",
+	  "shriram",
+	  "si",
+	  "singles",
+	  "site",
+	  "sj",
+	  "sk",
+	  "ski",
+	  "skin",
+	  "sky",
+	  "skype",
+	  "sl",
+	  "sm",
+	  "smile",
+	  "sn",
+	  "sncf",
+	  "so",
+	  "soccer",
+	  "social",
+	  "softbank",
+	  "software",
+	  "sohu",
+	  "solar",
+	  "solutions",
+	  "song",
+	  "sony",
+	  "soy",
+	  "space",
+	  "spiegel",
+	  "spot",
+	  "spreadbetting",
+	  "sr",
+	  "srl",
+	  "st",
+	  "stada",
+	  "star",
+	  "starhub",
+	  "statefarm",
+	  "statoil",
+	  "stc",
+	  "stcgroup",
+	  "stockholm",
+	  "storage",
+	  "store",
+	  "stream",
+	  "studio",
+	  "study",
+	  "style",
+	  "su",
+	  "sucks",
+	  "supplies",
+	  "supply",
+	  "support",
+	  "surf",
+	  "surgery",
+	  "suzuki",
+	  "sv",
+	  "swatch",
+	  "swiss",
+	  "sx",
+	  "sy",
+	  "sydney",
+	  "symantec",
+	  "systems",
+	  "sz",
+	  "tab",
+	  "taipei",
+	  "taobao",
+	  "tatamotors",
+	  "tatar",
+	  "tattoo",
+	  "tax",
+	  "taxi",
+	  "tc",
+	  "tci",
+	  "td",
+	  "team",
+	  "tech",
+	  "technology",
+	  "tel",
+	  "telecity",
+	  "telefonica",
+	  "temasek",
+	  "tennis",
+	  "tf",
+	  "tg",
+	  "th",
+	  "thd",
+	  "theater",
+	  "theatre",
+	  "tickets",
+	  "tienda",
+	  "tiffany",
+	  "tips",
+	  "tires",
+	  "tirol",
+	  "tj",
+	  "tk",
+	  "tl",
+	  "tm",
+	  "tmall",
+	  "tn",
+	  "to",
+	  "today",
+	  "tokyo",
+	  "tools",
+	  "top",
+	  "toray",
+	  "toshiba",
+	  "total",
+	  "tours",
+	  "town",
+	  "toyota",
+	  "toys",
+	  "tr",
+	  "trade",
+	  "trading",
+	  "training",
+	  "travel",
+	  "travelers",
+	  "travelersinsurance",
+	  "trust",
+	  "trv",
+	  "tt",
+	  "tube",
+	  "tui",
+	  "tunes",
+	  "tushu",
+	  "tv",
+	  "tvs",
+	  "tw",
+	  "tz",
+	  "ua",
+	  "ubs",
+	  "ug",
+	  "uk",
+	  "unicom",
+	  "university",
+	  "uno",
+	  "uol",
+	  "us",
+	  "uy",
+	  "uz",
+	  "va",
+	  "vacations",
+	  "vana",
+	  "vc",
+	  "ve",
+	  "vegas",
+	  "ventures",
+	  "verisign",
+	  "versicherung",
+	  "vet",
+	  "vg",
+	  "vi",
+	  "viajes",
+	  "video",
+	  "viking",
+	  "villas",
+	  "vin",
+	  "vip",
+	  "virgin",
+	  "vision",
+	  "vista",
+	  "vistaprint",
+	  "viva",
+	  "vlaanderen",
+	  "vn",
+	  "vodka",
+	  "volkswagen",
+	  "vote",
+	  "voting",
+	  "voto",
+	  "voyage",
+	  "vu",
+	  "vuelos",
+	  "wales",
+	  "walter",
+	  "wang",
+	  "wanggou",
+	  "watch",
+	  "watches",
+	  "weather",
+	  "weatherchannel",
+	  "webcam",
+	  "weber",
+	  "website",
+	  "wed",
+	  "wedding",
+	  "weir",
+	  "wf",
+	  "whoswho",
+	  "wien",
+	  "wiki",
+	  "williamhill",
+	  "win",
+	  "windows",
+	  "wine",
+	  "wme",
+	  "wolterskluwer",
+	  "work",
+	  "works",
+	  "world",
+	  "ws",
+	  "wtc",
+	  "wtf",
+	  "xbox",
+	  "xerox",
+	  "xin",
+	  "कॉम", // xn--11b4c3d
+	  "セール", // xn--1ck2e1b
+	  "佛山", // xn--1qqw23a
+	  "慈善", // xn--30rr7y
+	  "集团", // xn--3bst00m
+	  "在线", // xn--3ds443g
+	  "한국", // xn--3e0b707e
+	  "点看", // xn--3pxu8k
+	  "คอม", // xn--42c2d9a
+	  "ভারত", // xn--45brj9c
+	  "八卦", // xn--45q11c
+	  "موقع", // xn--4gbrim
+	  "公益", // xn--55qw42g
+	  "公司", // xn--55qx5d
+	  "移动", // xn--6frz82g
+	  "我爱你", // xn--6qq986b3xl
+	  "москва", // xn--80adxhks
+	  "қаз", // xn--80ao21a
+	  "онлайн", // xn--80asehdb
+	  "сайт", // xn--80aswg
+	  "联通", // xn--8y0a063a
+	  "срб", // xn--90a3ac
+	  "бел", // xn--90ais
+	  "קום", // xn--9dbq2a
+	  "时尚", // xn--9et52u
+	  "淡马锡", // xn--b4w605ferd
+	  "ファッション", // xn--bck1b9a5dre4c
+	  "орг", // xn--c1avg
+	  "नेट", // xn--c2br7g
+	  "ストア", // xn--cck2b3b
+	  "삼성", // xn--cg4bki
+	  "சிங்கப்பூர்", // xn--clchc0ea0b2g2a9gcd
+	  "商标", // xn--czr694b
+	  "商店", // xn--czrs0t
+	  "商城", // xn--czru2d
+	  "дети", // xn--d1acj3b
+	  "мкд", // xn--d1alf
+	  "ею", // xn--e1a4c
+	  "ポイント", // xn--eckvdtc9d
+	  "新闻", // xn--efvy88h
+	  "工行", // xn--estv75g
+	  "كوم", // xn--fhbei
+	  "中文网", // xn--fiq228c5hs
+	  "中信", // xn--fiq64b
+	  "中国", // xn--fiqs8s
+	  "中國", // xn--fiqz9s
+	  "娱乐", // xn--fjq720a
+	  "谷歌", // xn--flw351e
+	  "భారత్", // xn--fpcrj9c3d
+	  "ලංකා", // xn--fzc2c9e2c
+	  "购物", // xn--g2xx48c
+	  "クラウド", // xn--gckr3f0f
+	  "ભારત", // xn--gecrj9c
+	  "भारत", // xn--h2brj9c
+	  "网店", // xn--hxt814e
+	  "संगठन", // xn--i1b6b1a6a2e
+	  "餐厅", // xn--imr513n
+	  "网络", // xn--io0a7i
+	  "ком", // xn--j1aef
+	  "укр", // xn--j1amh
+	  "香港", // xn--j6w193g
+	  "诺基亚", // xn--jlq61u9w7b
+	  "食品", // xn--jvr189m
+	  "飞利浦", // xn--kcrx77d1x4a
+	  "台湾", // xn--kprw13d
+	  "台灣", // xn--kpry57d
+	  "手表", // xn--kpu716f
+	  "手机", // xn--kput3i
+	  "мон", // xn--l1acc
+	  "الجزائر", // xn--lgbbat1ad8j
+	  "عمان", // xn--mgb9awbf
+	  "ارامكو", // xn--mgba3a3ejt
+	  "ایران", // xn--mgba3a4f16a
+	  "امارات", // xn--mgbaam7a8h
+	  "بازار", // xn--mgbab2bd
+	  "الاردن", // xn--mgbayh7gpa
+	  "موبايلي", // xn--mgbb9fbpob
+	  "بھارت", // xn--mgbbh1a71e
+	  "المغرب", // xn--mgbc0a9azcg
+	  "السعودية", // xn--mgberp4a5d4ar
+	  "سودان", // xn--mgbpl2fh
+	  "همراه", // xn--mgbt3dhd
+	  "عراق", // xn--mgbtx2b
+	  "مليسيا", // xn--mgbx4cd0ab
+	  "澳門", // xn--mix891f
+	  "닷컴", // xn--mk1bu44c
+	  "政府", // xn--mxtq1m
+	  "شبكة", // xn--ngbc5azd
+	  "بيتك", // xn--ngbe9e0a
+	  "გე", // xn--node
+	  "机构", // xn--nqv7f
+	  "组织机构", // xn--nqv7fs00ema
+	  "健康", // xn--nyqy26a
+	  "ไทย", // xn--o3cw4h
+	  "سورية", // xn--ogbpf8fl
+	  "рус", // xn--p1acf
+	  "рф", // xn--p1ai
+	  "珠宝", // xn--pbt977c
+	  "تونس", // xn--pgbs0dh
+	  "大拿", // xn--pssy2u
+	  "みんな", // xn--q9jyb4c
+	  "グーグル", // xn--qcka1pmc
+	  "ελ", // xn--qxam
+	  "世界", // xn--rhqv96g
+	  "書籍", // xn--rovu88b
+	  "ਭਾਰਤ", // xn--s9brj9c
+	  "网址", // xn--ses554g
+	  "닷넷", // xn--t60b56a
+	  "コム", // xn--tckwe
+	  "游戏", // xn--unup4y
+	  "vermögensberater", // xn--vermgensberater-ctb
+	  "vermögensberatung", // xn--vermgensberatung-pwb
+	  "企业", // xn--vhquv
+	  "信息", // xn--vuq861b
+	  "嘉里大酒店", // xn--w4r85el8fhu5dnra
+	  "مصر", // xn--wgbh1c
+	  "قطر", // xn--wgbl6a
+	  "广东", // xn--xhq521b
+	  "இலங்கை", // xn--xkc2al3hye2a
+	  "இந்தியா", // xn--xkc2dl3a5ee0h
+	  "հայ", // xn--y9a3aq
+	  "新加坡", // xn--yfro4i67o
+	  "فلسطين", // xn--ygbi2ammx
+	  "政务", // xn--zfr164b
+	  "xperia",
+	  "xxx",
+	  "xyz",
+	  "yachts",
+	  "yahoo",
+	  "yamaxun",
+	  "yandex",
+	  "ye",
+	  "yodobashi",
+	  "yoga",
+	  "yokohama",
+	  "youtube",
+	  "yt",
+	  "za",
+	  "zara",
+	  "zero",
+	  "zip",
+	  "zm",
+	  "zone",
+	  "zuerich",
+	  "zw"
+	];
+
+
+/***/ },
+/* 446 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _addSticker = __webpack_require__(447);
+
+	var _addSticker2 = _interopRequireDefault(_addSticker);
+
+	var _removeSticker = __webpack_require__(448);
+
+	var _removeSticker2 = _interopRequireDefault(_removeSticker);
+
+	var _cleanupEmptyStickers = __webpack_require__(449);
+
+	var _cleanupEmptyStickers2 = _interopRequireDefault(_cleanupEmptyStickers);
+
+	var _blockRendererFn = __webpack_require__(450);
+
+	var _blockRendererFn2 = _interopRequireDefault(_blockRendererFn);
+
+	var _Sticker = __webpack_require__(451);
+
+	var _Sticker2 = _interopRequireDefault(_Sticker);
+
+	var _StickerSelect = __webpack_require__(452);
+
+	var _StickerSelect2 = _interopRequireDefault(_StickerSelect);
+
+	var _immutable = __webpack_require__(245);
+
+	var _decorateComponentWithProps = __webpack_require__(420);
+
+	var _decorateComponentWithProps2 = _interopRequireDefault(_decorateComponentWithProps);
+
+	var _stickerStyles = {
+	  "sticker": "draftJsStickerPlugin__sticker__2_vBJ",
+	  "stickerRemoveButton": "draftJsStickerPlugin__stickerRemoveButton__2vzbk",
+	  "stickerImage": "draftJsStickerPlugin__stickerImage__2X3Cm"
+	};
+
+	var _stickerStyles2 = _interopRequireDefault(_stickerStyles);
+
+	var _selectStyles = {
+	  "select": "draftJsStickerPlugin__select__30KbO",
+	  "selectPopover": "draftJsStickerPlugin__selectPopover__20IIM",
+	  "selectClosedPopover": "draftJsStickerPlugin__selectClosedPopover__1UXVa",
+	  "selectButton": "draftJsStickerPlugin__selectButton__3voOt",
+	  "selectPressedButton": "draftJsStickerPlugin__selectPressedButton__1xYeW draftJsStickerPlugin__selectButton__3voOt",
+	  "selectBottomGradient": "draftJsStickerPlugin__selectBottomGradient__1DA_0",
+	  "selectStickerList": "draftJsStickerPlugin__selectStickerList__3F4Za"
+	};
+
+	var _selectStyles2 = _interopRequireDefault(_selectStyles);
+
+	var _selectStickerStyles = {
+	  "selectSticker": "draftJsStickerPlugin__selectSticker__3VCSX",
+	  "root": "draftJsStickerPlugin__root__32LE-",
+	  "selectStickerImage": "draftJsStickerPlugin__selectStickerImage__HoOE2"
+	};
+
+	var _selectStickerStyles2 = _interopRequireDefault(_selectStickerStyles);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var defaultTheme = (0, _immutable.Map)({
+	  sticker: _stickerStyles2.default.sticker,
+	  stickerImage: _stickerStyles2.default.stickerImage,
+	  stickerRemoveButton: _stickerStyles2.default.stickerRemoveButton,
+
+	  select: _selectStyles2.default.select,
+	  selectPopover: _selectStyles2.default.selectPopover,
+	  selectClosedPopover: _selectStyles2.default.selectClosedPopover,
+	  selectBottomGradient: _selectStyles2.default.selectBottomGradient,
+	  selectButton: _selectStyles2.default.selectButton,
+	  selectPressedButton: _selectStyles2.default.selectPressedButton,
+	  selectStickerList: _selectStyles2.default.selectStickerList,
+
+	  selectSticker: _selectStickerStyles2.default.selectSticker,
+	  selectStickerImage: _selectStickerStyles2.default.selectStickerImage
+	});
+
+	var stickerPlugin = function stickerPlugin() {
+	  var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	  // Styles are overwritten instead of merged as merging causes a lot of confusion.
+	  //
+	  // Why? Because when merging a developer needs to know all of the underlying
+	  // styles which needs a deep dive into the code. Merging also makes it prone to
+	  // errors when upgrading as basically every styling change would become a major
+	  // breaking change. 1px of an increased padding can break a whole layout.
+	  var theme = config.theme ? config.theme : defaultTheme;
+	  var stickers = config.stickers;
+	  var selectButtonContent = config.selectButtonContent ? config.selectButtonContent : '☺';
+
+	  // default to true if not explicitly set to false
+	  var attachRemoveButton = config.attachRemoveButton !== false;
+	  var stickerSelectProps = {
+	    selectButtonContent: selectButtonContent,
+	    stickers: stickers,
+	    theme: theme
+	  };
+	  var stickerProps = {
+	    attachRemoveButton: attachRemoveButton,
+	    stickers: stickers,
+	    theme: theme
+	  };
+	  var blockRendererConfig = _extends({}, config, {
+	    Sticker: (0, _decorateComponentWithProps2.default)(_Sticker2.default, stickerProps)
+	  });
+	  return {
+	    pluginProps: {
+	      blockRendererFn: (0, _blockRendererFn2.default)(blockRendererConfig),
+	      onChange: _cleanupEmptyStickers2.default
+	    },
+	    add: _addSticker2.default,
+	    remove: _removeSticker2.default,
+	    StickerSelect: (0, _decorateComponentWithProps2.default)(_StickerSelect2.default, stickerSelectProps)
+	  };
+	};
+
+	exports.default = stickerPlugin;
+
+/***/ },
+/* 447 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _draftJs = __webpack_require__(243);
+
+	var _immutable = __webpack_require__(245);
+
+	/**
+	 * Adds a sticker to an editor state
+	 */
+
+	exports.default = function (editorState, stickerId) {
+	  var currentContentState = editorState.getCurrentContent();
+	  var currentSelectionState = editorState.getSelection();
+
+	  // in case text is selected it is removed and then the sticker is appended
+	  var afterRemovalContentState = _draftJs.Modifier.removeRange(currentContentState, currentSelectionState, 'backward');
+
+	  // deciding on the postion to split the text
+	  var targetSelection = afterRemovalContentState.getSelectionAfter();
+	  var blockKeyForTarget = targetSelection.get('focusKey');
+	  var block = currentContentState.getBlockForKey(blockKeyForTarget);
+	  var insertionTargetSelection = void 0;
+	  var insertionTargetBlock = void 0;
+
+	  // In case there are no characters or entity or the selection is at the start it
+	  // is safe to insert the sticker in the current block.
+	  // Otherwise a new block is created (the sticker is always its own block)
+	  var isEmptyBlock = block.getLength() === 0 && block.getEntityAt(0) === null;
+	  var selectedFromStart = currentSelectionState.getStartOffset() === 0;
+	  if (isEmptyBlock || selectedFromStart) {
+	    insertionTargetSelection = targetSelection;
+	    insertionTargetBlock = afterRemovalContentState;
+	  } else {
+	    // the only way to insert a new seems to be by splitting an existing in to two
+	    insertionTargetBlock = _draftJs.Modifier.splitBlock(afterRemovalContentState, targetSelection);
+
+	    // the position to insert our blocks
+	    insertionTargetSelection = insertionTargetBlock.getSelectionAfter();
+	  }
+
+	  // TODO not sure why we need it …
+	  var newContentStateAfterSplit = _draftJs.Modifier.setBlockType(insertionTargetBlock, insertionTargetSelection, 'sticker');
+
+	  // creating a new ContentBlock including the entity with data
+	  var entityKey = _draftJs.Entity.create('sticker', 'IMMUTABLE', { id: stickerId });
+	  var charDataOfSticker = _draftJs.CharacterMetadata.create({ entity: entityKey });
+
+	  var fragmentArray = [new _draftJs.ContentBlock({
+	    key: (0, _draftJs.genKey)(),
+	    type: 'sticker',
+	    text: '',
+	    characterList: (0, _immutable.List)((0, _immutable.Repeat)(charDataOfSticker, 1)) }), // eslint-disable-line new-cap
+
+
+	  // new contentblock so we can continue wrting right away after inserting the sticker
+	  new _draftJs.ContentBlock({
+	    key: (0, _draftJs.genKey)(),
+	    type: 'unstyled',
+	    text: '',
+	    characterList: (0, _immutable.List)() })];
+
+	  // create fragment containing the two content blocks
+	  // eslint-disable-line new-cap
+	  var fragment = _draftJs.BlockMapBuilder.createFromArray(fragmentArray);
+
+	  // replace the contentblock we reserved for our insert
+	  var contentStateWithSticker = _draftJs.Modifier.replaceWithFragment(newContentStateAfterSplit, insertionTargetSelection, fragment);
+
+	  // update editor state with our new state including the sticker
+	  var newState = _draftJs.EditorState.push(editorState, contentStateWithSticker, 'insert-sticker');
+	  return _draftJs.EditorState.forceSelection(newState, contentStateWithSticker.getSelectionAfter());
+	};
+
+/***/ },
+/* 448 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _draftJs = __webpack_require__(243);
+
+	exports.default = function (editorState, blockKey) {
+	  var content = editorState.getCurrentContent();
+	  var newSelection = new _draftJs.SelectionState({
+	    anchorKey: blockKey,
+	    anchorOffset: 0,
+	    focusKey: blockKey,
+	    focusOffset: 0
+	  });
+
+	  var afterKey = content.getKeyAfter(blockKey);
+	  var afterBlock = content.getBlockForKey(afterKey);
+	  var targetRange = void 0;
+
+	  // Only if the following block the last with no text then the whole block
+	  // should be removed. Otherwise the block should be reduced to an unstyled block
+	  // without any characters.
+	  if (afterBlock && afterBlock.getType() === 'unstyled' && afterBlock.getLength() === 0 && afterBlock === content.getBlockMap().last()) {
+	    targetRange = new _draftJs.SelectionState({
+	      anchorKey: blockKey,
+	      anchorOffset: 0,
+	      focusKey: afterKey,
+	      focusOffset: 0
+	    });
+	  } else {
+	    targetRange = new _draftJs.SelectionState({
+	      anchorKey: blockKey,
+	      anchorOffset: 0,
+	      focusKey: blockKey,
+	      focusOffset: 1
+	    });
+	  }
+
+	  // change the blocktype and remove the characterList entry with the sticker
+	  content = _draftJs.Modifier.setBlockType(content, targetRange, 'unstyled');
+	  content = _draftJs.Modifier.removeRange(content, targetRange, 'backward');
+
+	  // force to new selection
+	  var newState = _draftJs.EditorState.push(editorState, content, 'remove-sticker');
+	  return _draftJs.EditorState.forceSelection(newState, newSelection);
+	}; /**
+	    * Removes a sticker from the editor state
+	    */
+
+/***/ },
+/* 449 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _draftJs = __webpack_require__(243);
+
+	var cleanupSticker = function cleanupSticker(editorState, blockKey) {
+	  var content = editorState.getCurrentContent();
+
+	  // get range of the broken sticker block
+	  var targetRange = new _draftJs.SelectionState({
+	    anchorKey: blockKey,
+	    anchorOffset: 0,
+	    focusKey: blockKey,
+	    focusOffset: 0
+	  });
+
+	  // convert the sticker block to a unstyled block to make text editing work
+	  var withoutSticker = _draftJs.Modifier.setBlockType(content, targetRange, 'unstyled');
+	  var newState = _draftJs.EditorState.push(editorState, withoutSticker, 'remove-sticker');
+	  return _draftJs.EditorState.forceSelection(newState, withoutSticker.getSelectionAfter());
+	}; /**
+	    * Adds backspace support to stickers
+	    */
+
+	exports.default = function (editorState) {
+	  var newEditorState = editorState;
+
+	  // If there is an empty sticker block we remove it.
+	  // This can happen if a user hits the backspace button and removes the sticker.
+	  // In this case the block will still be of type sticker.
+	  editorState.getCurrentContent().get('blockMap').forEach(function (block) {
+	    if (block.get('type') === 'sticker' && block.getEntityAt(0) === null) {
+	      newEditorState = cleanupSticker(editorState, block.get('key'));
+	    }
+	  });
+	  return newEditorState;
+	};
+
+/***/ },
+/* 450 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _removeSticker = __webpack_require__(448);
+
+	var _removeSticker2 = _interopRequireDefault(_removeSticker);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (config) {
+	  return function (contentBlock, getEditorState, updateEditorState) {
+	    var type = contentBlock.getType();
+	    if (type === 'sticker') {
+	      return {
+	        component: config.Sticker,
+	        props: {
+	          onRemove: function onRemove(blockKey) {
+	            updateEditorState((0, _removeSticker2.default)(getEditorState(), blockKey));
+	          }
+	        }
+	      };
+	    }
+
+	    return undefined;
+	  };
+	};
+
+/***/ },
+/* 451 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(243);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Sticker = function (_Component) {
+	  _inherits(Sticker, _Component);
+
+	  function Sticker() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, Sticker);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(Sticker)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.remove = function (event) {
+	      // Note: important to avoid a content edit change
+	      event.preventDefault();
+	      event.stopPropagation();
+
+	      _this.props.blockProps.onRemove(_this.props.block.getKey());
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(Sticker, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var block = _props.block;
+	      var stickers = _props.stickers;
+	      var theme = _props.theme;
+
+	      var removeButton = _react2.default.createElement(
+	        'span',
+	        {
+	          className: theme.get('stickerRemoveButton'),
+	          onClick: this.remove,
+	          role: 'button'
+	        },
+	        '✕'
+	      );
+
+	      var data = _draftJs.Entity.get(block.getEntityAt(0)).getData();
+	      return _react2.default.createElement(
+	        'figure',
+	        {
+	          contentEditable: false,
+	          'data-offset-key': block.get('key') + '-0-0',
+	          className: theme.get('sticker')
+	        },
+	        _react2.default.createElement('img', {
+	          className: theme.get('stickerImage'),
+	          src: stickers.getIn(['data', data.id, 'url'])
+	        }),
+	        this.props.attachRemoveButton ? removeButton : null
+	      );
+	    }
+	  }]);
+
+	  return Sticker;
+	}(_react.Component);
+
+	exports.default = Sticker;
+
+/***/ },
+/* 452 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _StickerOption = __webpack_require__(453);
+
+	var _StickerOption2 = _interopRequireDefault(_StickerOption);
+
+	var _addSticker = __webpack_require__(447);
+
+	var _addSticker2 = _interopRequireDefault(_addSticker);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	 * Sets the CSS overflow value to newValue
+	 * Use like this: setOverflow('auto', document.body);
+	 */
+	function setOverflow(newValue, element) {
+	  element.style.overflow = newValue; // eslint-disable-line no-param-reassign
+	}
+
+	/**
+	 * Sticker Selector Component
+	 */
+
+	var StickerSelect = function (_Component) {
+	  _inherits(StickerSelect, _Component);
+
+	  function StickerSelect() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, StickerSelect);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(StickerSelect)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	      open: false
+	    }, _this.onMouseEnter = function () {
+	      setOverflow('hidden', document.body);
+	    }, _this.onMouseLeave = function () {
+	      setOverflow('auto', document.body);
+	    }, _this.openPopover = function () {
+	      if (!_this.state.open) {
+	        _this.preventNextClose = true;
+	        _this.setState({
+	          open: true
+	        });
+	      }
+	    }, _this.closePopover = function () {
+	      if (!_this.preventNextClose && _this.state.open) {
+	        _this.setState({
+	          open: false
+	        });
+	      }
+
+	      _this.preventNextClose = false;
+	    }, _this.add = function (id) {
+	      var editor = _this.props.editor;
+
+	      editor.onChange((0, _addSticker2.default)(editor.state.editorState, id));
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+	  // Start the selector closed
+
+
+	  _createClass(StickerSelect, [{
+	    key: 'componentDidMount',
+
+
+	    // When the selector is open and users click anywhere on the page,
+	    // the selector should close
+	    value: function componentDidMount() {
+	      document.addEventListener('click', this.closePopover);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      document.removeEventListener('click', this.closePopover);
+	    }
+
+	    // When users are scrolling the popover, the page shouldn't scroll when
+	    // they reach the end of it
+
+
+	    // Open the popover
+
+
+	    // Close the popover
+
+
+	    // Add a sticker to the editor
+
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      // Create the sticker selection elements
+	      var stickerElements = this.props.stickers.get('data').map(function (sticker) {
+	        var id = sticker.get('id');
+	        var url = sticker.get('url');
+	        return _react2.default.createElement(_StickerOption2.default, {
+	          theme: _this2.props.theme,
+	          key: id,
+	          onClick: _this2.add,
+	          id: id,
+	          url: url
+	        });
+	      });
+
+	      var theme = this.props.theme;
+	      var popoverClassName = this.state.open ? theme.get('selectPopover') : theme.get('selectClosedPopover');
+	      var buttonClassName = this.state.open ? theme.get('selectPressedButton') : theme.get('selectButton');
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: theme.get('select') },
+	        _react2.default.createElement(
+	          'button',
+	          {
+	            className: buttonClassName,
+	            onMouseUp: this.openPopover,
+	            type: 'button'
+	          },
+	          this.props.selectButtonContent
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          {
+	            className: popoverClassName,
+	            onMouseEnter: this.onMouseEnter,
+	            onMouseLeave: this.onMouseLeave
+	          },
+	          _react2.default.createElement(
+	            'div',
+	            { className: theme.get('selectStickerList') },
+	            stickerElements.toList().toJS()
+	          ),
+	          _react2.default.createElement('div', { className: theme.get('selectBottomGradient') })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return StickerSelect;
+	}(_react.Component);
+
+	exports.default = StickerSelect;
+
+/***/ },
+/* 453 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Showcases a sticker one can then pick to add to the editor
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	var StickerOption = function (_Component) {
+	  _inherits(StickerOption, _Component);
+
+	  function StickerOption() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, StickerOption);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(StickerOption)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onClick = function () {
+	      _this.props.onClick(_this.props.id);
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(StickerOption, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var id = _props.id;
+	      var url = _props.url;
+	      var theme = this.props.theme;
+
+	      return _react2.default.createElement(
+	        'button',
+	        {
+	          onClick: this.onClick,
+	          key: id,
+	          type: 'button',
+	          className: theme.get('selectSticker')
+	        },
+	        _react2.default.createElement('img', { className: theme.get('selectStickerImage'), src: url })
+	      );
+	    }
+	  }]);
+
+	  return StickerOption;
+	}(_react.Component);
+
+	exports.default = StickerOption;
+
+/***/ },
+/* 454 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _Hashtag = __webpack_require__(455);
+
+	var _Hashtag2 = _interopRequireDefault(_Hashtag);
+
+	var _hashtagStrategy = __webpack_require__(456);
+
+	var _hashtagStrategy2 = _interopRequireDefault(_hashtagStrategy);
+
+	var _immutable = __webpack_require__(245);
+
+	var _styles = {
+	  "hashtag": "draftJsHashtagPlugin__hashtag__1wMVC"
+	};
+
+	var _styles2 = _interopRequireDefault(_styles);
+
+	var _decorateComponentWithProps = __webpack_require__(420);
+
+	var _decorateComponentWithProps2 = _interopRequireDefault(_decorateComponentWithProps);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var defaultTheme = (0, _immutable.Map)({
+	  hashtag: _styles2.default.hashtag
+	});
+
+	var hashtagPlugin = function hashtagPlugin() {
+	  var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	  // Styles are overwritten instead of merged as merging causes a lot of confusion.
+	  //
+	  // Why? Because when merging a developer needs to know all of the underlying
+	  // styles which needs a deep dive into the code. Merging also makes it prone to
+	  // errors when upgrading as basically every styling change would become a major
+	  // breaking change. 1px of an increased padding can break a whole layout.
+	  var theme = config.theme ? config.theme : defaultTheme;
+	  return {
+	    pluginProps: {
+	      decorators: [{
+	        strategy: _hashtagStrategy2.default,
+	        component: (0, _decorateComponentWithProps2.default)(_Hashtag2.default, { theme: theme })
+	      }]
+	    }
+	  };
+	};
+
+	exports.default = hashtagPlugin;
+
+/***/ },
+/* 455 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _immutable = __webpack_require__(245);
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _unionClassNames = __webpack_require__(437);
+
+	var _unionClassNames2 = _interopRequireDefault(_unionClassNames);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Hashtag = function (_Component) {
+	  _inherits(Hashtag, _Component);
+
+	  function Hashtag() {
+	    _classCallCheck(this, Hashtag);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Hashtag).apply(this, arguments));
+	  }
+
+	  _createClass(Hashtag, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var _props$theme = _props.theme;
+	      var theme = _props$theme === undefined ? (0, _immutable.Map)() : _props$theme;
+	      var className = _props.className;
+
+	      var props = _objectWithoutProperties(_props, ['theme', 'className']); // eslint-disable-line no-use-before-define
+
+
+	      var combinedClassName = (0, _unionClassNames2.default)(theme.get('hashtag'), className);
+	      return _react2.default.createElement('span', _extends({}, props, { className: combinedClassName }));
+	    }
+	  }]);
+
+	  return Hashtag;
+	}(_react.Component);
+
+	exports.default = Hashtag;
+
+/***/ },
+/* 456 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _findWithRegex = __webpack_require__(434);
+
+	var _findWithRegex2 = _interopRequireDefault(_findWithRegex);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * TODO improve this strategy
+	 */
+	var HASHTAG_REGEX = /\#[\w\u0590-\u05ff]+/g;
+
+	exports.default = function (contentBlock, callback) {
+	  (0, _findWithRegex2.default)(HASHTAG_REGEX, contentBlock, callback);
+	};
+
+/***/ },
+/* 457 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _UndoButton = __webpack_require__(458);
+
+	var _UndoButton2 = _interopRequireDefault(_UndoButton);
+
+	var _RedoButton = __webpack_require__(459);
+
+	var _RedoButton2 = _interopRequireDefault(_RedoButton);
+
+	var _immutable = __webpack_require__(245);
+
+	var _styles = {
+	  "button": "draftJsUndoPlugin__button__3Vugn"
+	};
+
+	var _styles2 = _interopRequireDefault(_styles);
+
+	var _decorateComponentWithProps = __webpack_require__(420);
+
+	var _decorateComponentWithProps2 = _interopRequireDefault(_decorateComponentWithProps);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var defaultTheme = (0, _immutable.Map)({
+	  redo: _styles2.default.button,
+	  undo: _styles2.default.button
+	});
+
+	var historyPlugin = function historyPlugin() {
+	  var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+	  var undoContent = config.undoContent ? config.undoContent : '↺';
+	  var redoContent = config.redoContent ? config.redoContent : '↻';
+
+	  // Styles are overwritten instead of merged as merging causes a lot of confusion.
+	  //
+	  // Why? Because when merging a developer needs to know all of the underlying
+	  // styles which needs a deep dive into the code. Merging also makes it prone to
+	  // errors when upgrading as basically every styling change would become a major
+	  // breaking change. 1px of an increased padding can break a whole layout.
+	  var theme = config.theme ? config.theme : defaultTheme;
+	  return {
+	    UndoButton: (0, _decorateComponentWithProps2.default)(_UndoButton2.default, { theme: theme, children: undoContent }),
+	    RedoButton: (0, _decorateComponentWithProps2.default)(_RedoButton2.default, { theme: theme, children: redoContent })
+	  };
+	};
+
+	exports.default = historyPlugin;
+
+/***/ },
+/* 458 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(243);
+
+	var _unionClassNames = __webpack_require__(437);
+
+	var _unionClassNames2 = _interopRequireDefault(_unionClassNames);
+
+	var _immutable = __webpack_require__(245);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var UndoButton = function (_Component) {
+	  _inherits(UndoButton, _Component);
+
+	  function UndoButton() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, UndoButton);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(UndoButton)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onClick = function () {
+	      _this.props.onChange(_draftJs.EditorState.undo(_this.props.editorState));
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(UndoButton, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var _props$theme = _props.theme;
+	      var theme = _props$theme === undefined ? (0, _immutable.Map)() : _props$theme;
+	      var children = _props.children;
+	      var className = _props.className;
+
+	      var props = _objectWithoutProperties(_props, ['theme', 'children', 'className']); // eslint-disable-line no-use-before-define
+
+
+	      var combinedClassName = (0, _unionClassNames2.default)(theme.get('undo'), className);
+	      return _react2.default.createElement(
+	        'button',
+	        {
+	          disabled: this.props.editorState.getUndoStack().isEmpty(),
+	          onClick: this.onClick,
+	          className: combinedClassName
+	        },
+	        children
+	      );
+	    }
+	  }]);
+
+	  return UndoButton;
+	}(_react.Component);
+
+	UndoButton.propTypes = {
+	  children: _react.PropTypes.node.isRequired,
+	  onChange: _react.PropTypes.func.isRequired,
+	  editorState: _react.PropTypes.any.isRequired,
+	  theme: _react.PropTypes.any
+	};
+	exports.default = UndoButton;
+
+/***/ },
+/* 459 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _draftJs = __webpack_require__(243);
+
+	var _unionClassNames = __webpack_require__(437);
+
+	var _unionClassNames2 = _interopRequireDefault(_unionClassNames);
+
+	var _immutable = __webpack_require__(245);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RedoButton = function (_Component) {
+	  _inherits(RedoButton, _Component);
+
+	  function RedoButton() {
+	    var _Object$getPrototypeO;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, RedoButton);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(RedoButton)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.onClick = function () {
+	      _this.props.onChange(_draftJs.EditorState.redo(_this.props.editorState));
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(RedoButton, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var _props$theme = _props.theme;
+	      var theme = _props$theme === undefined ? (0, _immutable.Map)() : _props$theme;
+	      var children = _props.children;
+	      var className = _props.className;
+
+	      var props = _objectWithoutProperties(_props, ['theme', 'children', 'className']); // eslint-disable-line no-use-before-define
+
+
+	      var combinedClassName = (0, _unionClassNames2.default)(theme.get('redo'), className);
+	      return _react2.default.createElement(
+	        'button',
+	        {
+	          disabled: this.props.editorState.getRedoStack().isEmpty(),
+	          onClick: this.onClick,
+	          className: combinedClassName
+	        },
+	        children
+	      );
+	    }
+	  }]);
+
+	  return RedoButton;
+	}(_react.Component);
+
+	RedoButton.propTypes = {
+	  children: _react.PropTypes.node.isRequired,
+	  onChange: _react.PropTypes.func.isRequired,
+	  editorState: _react.PropTypes.any.isRequired,
+	  theme: _react.PropTypes.any
+	};
+	exports.default = RedoButton;
+
+/***/ },
+/* 460 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(461);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(463)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../css-loader/index.js!./plugin.css", function() {
+				var newContent = require("!!./../../css-loader/index.js!./plugin.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 461 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(462)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".draftJsLinkifyPlugin__link__2ittM, .draftJsLinkifyPlugin__link__2ittM:visited {\n  color: #AB0393;\n  text-decoration: none;\n}\n\n.draftJsLinkifyPlugin__link__2ittM:hover, .draftJsLinkifyPlugin__link__2ittM:focus {\n  color: #DE61CC;\n  outline: 0; /* reset for :focus */\n}\n\n.draftJsLinkifyPlugin__link__2ittM:active {\n  color: #8E2E80;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 462 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 463 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0,
+		styleElementsInsertedAtTop = [];
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		// By default, add <style> tags to the bottom of <head>.
+		if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function insertStyleElement(options, styleElement) {
+		var head = getHeadElement();
+		var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+		if (options.insertAt === "top") {
+			if(!lastStyleElementInsertedAtTop) {
+				head.insertBefore(styleElement, head.firstChild);
+			} else if(lastStyleElementInsertedAtTop.nextSibling) {
+				head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+			} else {
+				head.appendChild(styleElement);
+			}
+			styleElementsInsertedAtTop.push(styleElement);
+		} else if (options.insertAt === "bottom") {
+			head.appendChild(styleElement);
+		} else {
+			throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+		}
+	}
+
+	function removeStyleElement(styleElement) {
+		styleElement.parentNode.removeChild(styleElement);
+		var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+		if(idx >= 0) {
+			styleElementsInsertedAtTop.splice(idx, 1);
+		}
+	}
+
+	function createStyleElement(options) {
+		var styleElement = document.createElement("style");
+		styleElement.type = "text/css";
+		insertStyleElement(options, styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement(options) {
+		var linkElement = document.createElement("link");
+		linkElement.rel = "stylesheet";
+		insertStyleElement(options, linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement(options));
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement(options);
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement(options);
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				removeStyleElement(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ },
+/* 464 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(465);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(463)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../css-loader/index.js!./plugin.css", function() {
+				var newContent = require("!!./../../css-loader/index.js!./plugin.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 465 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(462)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".draftJsMentionPlugin__autocompleteEntry__3hYPz {\n  padding: 5px;\n}\n\n.draftJsMentionPlugin__autocompleteEntry__3hYPz:active {\n  background-color: #C8EAF7;\n}\n\n.draftJsMentionPlugin__autocompleteEntryFocused__3ralB {\n  background-color: #DEF0F7;\n}\n\n.draftJsMentionPlugin__autocompleteEntryText__VAEv4 {\n  display: inline-block;\n  margin-left: 8px;\n}\n\n.draftJsMentionPlugin__autocompleteEntryAvatar__2nAfa {\n  width: 24px;\n  height: 24px;\n  border-radius: 12px;\n  vertical-align: middle;\n}\n.draftJsMentionPlugin__autocomplete__2-Dw- {\n  display: inline-block;\n}\n\n.draftJsMentionPlugin__autocompletePopover__Yau-5 {\n  border: 1px solid #ddd;\n  margin-top: 1.75em;\n  min-width: 240px;\n  position: absolute;\n  background: #fff;\n  border-radius: 4px;\n  box-shadow: 0px 4px 30px 0px rgba(220,220,220,1);\n  cursor: pointer;\n  padding-top: 8px;\n  padding-bottom: 8px;\n  z-index: 2;\n}\n.draftJsMentionPlugin__mention__29BEd, .draftJsMentionPlugin__mention__29BEd:visited  {\n  color: #333;\n  cursor: pointer;\n  display: inline-block;\n  background: #DEF0F7;\n  padding-left: 2px;\n  padding-right: 2px;\n  border-radius: 2px;\n  text-decoration: none;\n}\n\n.draftJsMentionPlugin__mention__29BEd:hover, .draftJsMentionPlugin__mention__29BEd:focus {\n  color: #555;\n  background: #E5F2F7;\n  outline: 0; /* reset for :focus */\n}\n\n.draftJsMentionPlugin__mention__29BEd:active {\n  color: #222;\n  background: #BBE3F3;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 466 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(467);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(463)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../css-loader/index.js!./plugin.css", function() {
+				var newContent = require("!!./../../css-loader/index.js!./plugin.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 467 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(462)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".draftJsStickerPlugin__selectSticker__3VCSX {\n  border: 0;\n  border-radius: 4px;\n  background: #fff;\n}\n\n.draftJsStickerPlugin__selectSticker__3VCSX:hover, .draftJsStickerPlugin__root__32LE-:focus {\n  background: #efefef;\n  outline: 0; /* reset for :focus */\n}\n\n.draftJsStickerPlugin__selectSticker__3VCSX:active {\n  background: #dfdfdf;\n}\n\n.draftJsStickerPlugin__selectStickerImage__HoOE2 {\n  height: 85px;\n  width: 85px;\n}\n.draftJsStickerPlugin__select__30KbO {\n  background: #FFF;\n  display: inline-block;\n}\n\n.draftJsStickerPlugin__selectPopover__20IIM {\n  margin-top: 10px;\n  background: #FFF;\n  position: absolute;\n  height: 250px;\n  width: 225px;\n  border-radius: 4px;\n  padding: 10px;\n  box-shadow: 0px 4px 30px 0px rgba(220,220,220,1);\n  z-index: 1000;\n}\n\n.draftJsStickerPlugin__selectClosedPopover__1UXVa {\n  display: none;\n}\n\n.draftJsStickerPlugin__selectButton__3voOt {\n  background: #fff;\n  border: 1px solid #bbb;\n  padding: 0;\n  color: #888;\n  margin: 0;\n  border-radius: 20px;\n  cursor: pointer;\n  height: 40px;\n  width: 40px;\n  font-size: 1.6em;\n  line-height: 1.2em;\n}\n\n.draftJsStickerPlugin__selectButton__3voOt:focus {\n  outline: 0; /* reset for :focus */\n}\n\n.draftJsStickerPlugin__selectButton__3voOt:hover {\n  background: #f3f3f3;\n}\n\n.draftJsStickerPlugin__selectButton__3voOt:active {\n  background: #e6e6e6;\n}\n\n.draftJsStickerPlugin__selectPressedButton__1xYeW {\n  background: #ededed;\n}\n\n.draftJsStickerPlugin__selectBottomGradient__1DA_0 {\n  width: 100%;\n  height: 1em;\n  position: absolute;\n  bottom: 0px;\n  left: 0px;\n  right: 0px;\n  background-color: white;\n  pointer-events: none;\n  background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);\n  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);\n}\n\n.draftJsStickerPlugin__selectStickerList__3F4Za {\n  position: absolute;\n  overflow-x: none;\n  overflow-y: scroll;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  padding: 10px;\n}\n.draftJsStickerPlugin__sticker__2_vBJ {\n  margin: 0;\n  position: relative;\n  display: block;\n}\n\n.draftJsStickerPlugin__stickerRemoveButton__2vzbk {\n  background: #D9D9D9;\n  color: #FFF;\n  margin: 0;\n  padding: 0.5em;\n  border: none;\n  border-radius: 50%;\n  line-height: 80%;\n  position: absolute;\n  font-size: 0.62em;\n  margin-left: -0.825em;\n  cursor: pointer;\n}\n\n.draftJsStickerPlugin__stickerRemoveButton__2vzbk:hover {\n  background: #E4E4E4;\n}\n\n.draftJsStickerPlugin__stickerRemoveButton__2vzbk:active {\n  background: #CECECE;\n  color: #EFEFEF;\n}\n\n.draftJsStickerPlugin__stickerImage__2X3Cm {\n  width: 125px;\n  height: 125px;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 468 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(469);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(463)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../css-loader/index.js!./plugin.css", function() {
+				var newContent = require("!!./../../css-loader/index.js!./plugin.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 469 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(462)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".draftJsHashtagPlugin__hashtag__1wMVC {\n  color: #AB0393;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 470 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(471);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(463)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../css-loader/index.js!./plugin.css", function() {
+				var newContent = require("!!./../../css-loader/index.js!./plugin.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 471 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(462)();
+	// imports
+
+
+	// module
+	exports.push([module.id, ".draftJsUndoPlugin__button__3Vugn {\n  border: 1px solid #bbb;\n  height: 40px;\n  color: #888;\n  border-radius: 20px;\n  line-height: 1.2em;\n  cursor: pointer;\n  position: relative;\n  background-color: #fff;\n  width: 40px;\n  font-weight: bold;\n  font-size: 1.5em;\n  padding: 0;\n  top: 0;\n  margin: 0;\n  margin-right: 10px;\n}\n\n.draftJsUndoPlugin__button__3Vugn:focus {\n  background-color: #eee;\n  color: #999;\n  outline: 0; /* reset for :focus */\n}\n\n.draftJsUndoPlugin__button__3Vugn:hover {\n  background-color: #eee;\n  color: #999;\n}\n\n.draftJsUndoPlugin__button__3Vugn:active {\n  background-color: #ddd;\n  color: #777;\n}\n\n.draftJsUndoPlugin__button__3Vugn:disabled {\n  background-color: #F5F5F5;\n  color: #ccc;\n}\n", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ]);
