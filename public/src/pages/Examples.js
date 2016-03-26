@@ -9,7 +9,6 @@ import PlainText from '../components/PlainText.js';
 import Rich from '../components/Rich.js';
 import TexEditorExample from '../components/TexEditorExample.js';
 import Tweet from '../components/Tweet.js';
-import CustomMentionEditor from '../components/CustomMentionEditor.js';
 
 class Examples extends Component {
   render() {
@@ -18,33 +17,36 @@ class Examples extends Component {
         <Header />
         <br/><br/>
         <div className="container">
-       	<Panel title="Basic" source="https://github.com/facebook/draft-js/blob/master/examples/plaintext/plaintext.html">
+       	<Panel title="Basic" source="https://github.com/facebook/draft-js/blob/master/examples/plaintext/plaintext.html" features="Basic">
         	<Basic />
        	</Panel>
        	<br/><br/>
-       	<Panel title="Plain Text" source="https://github.com/facebook/draft-js/blob/master/examples/plaintext/plaintext.html">
+       	<Panel title="Plain Text" source="https://github.com/facebook/draft-js/blob/master/examples/plaintext/plaintext.html" features="Log contents to console">
         	<PlainText />
        	</Panel>
-        <Panel title="Link" source="https://github.com/facebook/draft-js/blob/master/examples/link/link.html">      
+        <Panel title="Link" source="https://github.com/facebook/draft-js/blob/master/examples/link/link.html" features="Add a link">      
         	<Link />
         </Panel>
-        <Panel title="Entity" source="https://github.com/facebook/draft-js/blob/master/examples/entity/entity.html">              
+        <Panel title="Entity" source="https://github.com/facebook/draft-js/blob/master/examples/entity/entity.html" features="Try different entities">              
         	<Entity />
         </Panel> 
-        <Panel title="Color" source="https://github.com/facebook/draft-js/blob/master/examples/color/color.html">                    
+        <Panel title="Color" source="https://github.com/facebook/draft-js/blob/master/examples/color/color.html" features="Color Buttons">                    
         	<Color />
         </Panel>
-        <Panel title="Rich Text" source="https://github.com/facebook/draft-js/blob/master/examples/rich/rich.html">                    
+        <Panel title="Rich Text" source="https://github.com/facebook/draft-js/blob/master/examples/rich/rich.html" features="Classic Rich text editor">                    
         	<Rich />
         </Panel>
-        <Panel title="TeXEditorExample" source="https://github.com/facebook/draft-js/blob/master/examples/tex">                    
+        <Panel title="TeXEditorExample" source="https://github.com/facebook/draft-js/blob/master/examples/tex" features="Click on the equation to edit; Add new equation">                    
         	<TexEditorExample />
         </Panel>
-        <Panel title="TeXEditorExample" source="https://github.com/facebook/draft-js/blob/master/examples/tweet">                    
+        <Panel title="TeXEditorExample" source="https://github.com/facebook/draft-js/blob/master/examples/tweet" features="@mention and #hashtag">                    
         	<Tweet />
         </Panel>
-        <Panel title="https://react-rte.org/demo" source="https://react-rte.org/demo">                    
-        	   <iframe src="https://react-rte.org/demo" height="500px" width="1000px" frameBorder="0"/>
+        <Panel title="https://react-rte.org/demo" source="https://react-rte.org/demo" features="Rich Text Buttons">                    
+             <iframe src="https://react-rte.org/demo" height="500px" width="1000px" frameBorder="0"/>
+        </Panel>
+        <Panel title="Facebook Notes clone" source="https://github.com/andrewcoelho/react-text-editor" features="Add images, bold, italics, numbered rows">                    
+        	   <iframe src="http://www.andrewcoelho.com/react-text-editor/" height="1000px" width="1100px" frameBorder="0"/>
         </Panel>
 
         </div>
