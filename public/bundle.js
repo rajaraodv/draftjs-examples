@@ -7972,6 +7972,10 @@
 	  }
 	};
 
+	function registerNullComponentID() {
+	  ReactEmptyComponentRegistry.registerNullComponentID(this._rootNodeID);
+	}
+
 	var ReactEmptyComponent = function (instantiate) {
 	  this._currentElement = null;
 	  this._rootNodeID = null;
@@ -7980,7 +7984,7 @@
 	assign(ReactEmptyComponent.prototype, {
 	  construct: function (element) {},
 	  mountComponent: function (rootID, transaction, context) {
-	    ReactEmptyComponentRegistry.registerNullComponentID(rootID);
+	    transaction.getReactMountReady().enqueue(registerNullComponentID, this);
 	    this._rootNodeID = rootID;
 	    return ReactReconciler.mountComponent(this._renderedComponent, rootID, transaction, context);
 	  },
@@ -18703,7 +18707,7 @@
 
 	'use strict';
 
-	module.exports = '0.14.7';
+	module.exports = '0.14.8';
 
 /***/ },
 /* 148 */
@@ -26352,7 +26356,7 @@
 	          _react2.default.createElement(
 	            _Panel2.default,
 	            { title: 'https://react-rte.org/demo', source: 'https://react-rte.org/demo', features: 'Rich Text Buttons' },
-	            _react2.default.createElement('iframe', { src: 'https://react-rte.org/demo', height: '500px', width: '1000px', frameBorder: '0' })
+	            _react2.default.createElement('iframe', { src: 'https://react-rte.org/demo', style: { display: 'block', width: '100%', height: 500 }, frameBorder: '0' })
 	          ),
 	          _react2.default.createElement(
 	            _Panel2.default,
