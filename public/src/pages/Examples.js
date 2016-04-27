@@ -54,6 +54,10 @@ class Examples extends Component {
         	   Note: If you are not seeing anything, reload this app in HTTP(not HTTPS) I'm just iframing it from <a href="http://www.andrewcoelho.com/react-text-editor/" target="_blank">http://www.andrewcoelho.com/react-text-editor/</a>)
              <iframe src="http://www.andrewcoelho.com/react-text-editor/" height="1000px" width="1100px" frameBorder="0"/>
         </Panel>
+        <Panel title="Megadraft" source="http://globocom.github.io/megadraft" features="Add images, links, bold, italics, etc">
+        	   Note: If you are not seeing anything, reload this app in HTTP(not HTTPS) I'm just iframing it from <a href="http://globocom.github.io/megadraft" target="_blank">http://globocom.github.io/megadraft</a>)
+             <iframe src="http://globocom.github.io/megadraft" height="1000px" width="1100px" frameBorder="0"/>
+        </Panel>
 
         </div>
       </div>
