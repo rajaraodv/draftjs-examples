@@ -43,7 +43,7 @@
     "immutable": "^3.7.6",
     "jade": "~1.11.0",
     "jsonwebtoken": "^5.7.0",
-    "katex": "^0.5.1",
+    "katex": "^0.16.4",
     "lodash": "^3.10.1",
     "morgan": "~1.6.1",
     "native-css": "^1.2.3",
