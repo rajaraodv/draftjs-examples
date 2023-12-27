@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "async": "^1.5.2",
-    "axios": "^0.9.0",
+    "axios": "^1.6.3",
     "babel-preset-stage-1": "^6.1.18",
     "bcrypt": "^0.8.5",
     "body-parser": "~1.13.2",
