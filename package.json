@@ -38,7 +38,7 @@
     "draft-js-sticker-plugin": "0.0.3",
     "draft-js-undo-plugin": "0.0.5",
     "ejs": "^2.4.1",
-    "express": "~4.13.1",
+    "express": "~4.19.2",
     "express-jwt": "^3.3.0",
     "immutable": "^3.7.6",
     "jade": "~1.11.0",
