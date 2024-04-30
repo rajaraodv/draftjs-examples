@@ -37,7 +37,7 @@
     "draft-js-plugins-editor": "^0.2.0",
     "draft-js-sticker-plugin": "0.0.3",
     "draft-js-undo-plugin": "0.0.5",
-    "ejs": "^2.4.1",
+    "ejs": "^3.1.10",
     "express": "~4.13.1",
     "express-jwt": "^3.3.0",
     "immutable": "^3.7.6",
