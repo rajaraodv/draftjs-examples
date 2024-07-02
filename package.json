@@ -39,7 +39,7 @@
     "draft-js-undo-plugin": "0.0.5",
     "ejs": "^2.4.1",
     "express": "~4.13.1",
-    "express-jwt": "^3.3.0",
+    "express-jwt": "^7.0.0",
     "immutable": "^3.7.6",
     "jade": "~1.11.0",
     "jsonwebtoken": "^5.7.0",
